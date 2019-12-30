@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css?family=Barlow&display=swap');
+
+$white: #ffff;
+$black: #0000;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #868e96;
+$gray-700: #495057;
+$gray-800: #2C3531;
+$blue: #116466;
+$purple: #FDCC42;
+$pink: #e83e8c;
+$red: #D9B08C;
+$orange: #f0ad4e;
+$yellow: rgb(63, 53, 43);
+$green: #325B67;
+$teal: #20c997;
+$cyan: rgb(66, 61, 46);
+$primary: $blue;
+$secondary: $gray-800;
+$success: $green;
+$info: $cyan;
+$warning: $yellow;
+$danger: $red;
+$light: $gray-100;
+$dark: $gray-800;
+$enable-rounded: false;
+$body-color: $gray-800;
+$font-family-sans-serif: Barlow;
+$font-size-base: 0.9375rem;
+$headings-font-weight: 300;
+$navbar-dark-hover-color: rgba($white,1);
+$navbar-light-hover-color: rgba($black,.9);
+$alert-border-width: 0;
+$progress-height: 0.5rem;
+
+body {
+  margin: 0;
+  font-family: Barlow,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+//based on default Bootstrap
+@import '~bootstrap/scss/bootstrap';
