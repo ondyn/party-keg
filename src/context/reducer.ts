@@ -22,7 +22,6 @@ export default (state: IContext, action: Action) => {
         isAuthenticated: false,
         loading: false,
         user: null,
-        error: action.payload,
       };
     case 'set_loading':
       return {

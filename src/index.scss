@@ -52,3 +52,52 @@ code {
 
 //based on default Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.navbar-link{
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  --blue: #116466;
+  --indigo: #6610f2;
+  --purple: #FDCC42;
+  --pink: #e83e8c;
+  --red: #D9B08C;
+  --orange: #f0ad4e;
+  --yellow: #3f352b;
+  --green: #325B67;
+  --teal: #20c997;
+  --cyan: #423d2e;
+  --white: #ffff;
+  --gray: #868e96;
+  --gray-dark: #2C3531;
+  --primary: #116466;
+  --secondary: #2C3531;
+  --success: #325B67;
+  --info: #423d2e;
+  --warning: #3f352b;
+  --danger: #D9B08C;
+  --light: #f8f9fa;
+  --dark: #2C3531;
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --font-family-sans-serif: Barlow;
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  -webkit-font-smoothing: antialiased;
+  font-family: Barlow;
+  line-height: 1.5;
+  font-size: 0.9375rem;
+  list-style: none;
+  box-sizing: border-box;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  padding: 0.25rem 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}

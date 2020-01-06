@@ -1,7 +1,6 @@
 import React, { useReducer, FunctionComponent, useEffect, useState } from 'react';
 import ApiContext from './context';
 import ApiReducer from './reducer';
-import Firebase from '../components/Firebase';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -16,7 +15,7 @@ const config = {
 };
 
 firebase.initializeApp(config);
-console.log('called once?');
+console.log('starting backend');
 
 const ApiState: FunctionComponent  = ({ children }) => {
   const initState = {
@@ -29,14 +28,13 @@ const ApiState: FunctionComponent  = ({ children }) => {
     user: null,
     error: null,
   };
-  // firebase.initializeApp(config);
 
   const [state, dispatch] = useReducer(ApiReducer, initState);
 
   const [listener, setListener] = useState(firebase.auth().onAuthStateChanged(
     (authUser) => {
       if ((authUser)) {
-        console.log('onAuthStateChanged'+JSON.stringify(authUser))
+        console.log('onAuthStateChanged'+JSON.stringify(authUser));
         firebase.firestore().doc(`users/${authUser.uid}`)
           .get()
           .then((snapshot) => {
@@ -96,7 +94,10 @@ const ApiState: FunctionComponent  = ({ children }) => {
   };
 
   // logout
-  const logout = () => dispatch({ type: 'logout', payload: 'logged out' });
+  const logout = () => {
+    firebase.auth().signOut();
+    dispatch({ type: 'logout', payload: 'logged out' });
+  };
 
   // todo clear Errors
   // const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
@@ -132,7 +133,7 @@ const ApiState: FunctionComponent  = ({ children }) => {
         logout,
         getDevices,
         setLoading,
-        firebase: Firebase,
+        fireDB: firebase.firestore(),
       }}
     >
       {/* eslint-disable-next-line react/destructuring-assignment,react/prop-types */}

@@ -1,3 +1,6 @@
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
+
 // context state
 export interface IContext {
   isAuthenticated: boolean;
@@ -9,6 +12,5 @@ export interface IContext {
   login: (username: string, password: string) => void;
   logout: () => void;
   setLoading: () => void;
-
-  firebase: any;
+  fireDB: firebase.firestore.Firestore;
 }

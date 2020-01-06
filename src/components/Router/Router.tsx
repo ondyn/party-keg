@@ -13,11 +13,7 @@ import ApiContext from '../../context/context';
 import { IContext } from '../../context/interface';
 import PrivateRoute from './PrivateRoute';
 import SignInPage from '../SignIn';
-// ################################################################################################
-// Temp pages
-// They will be replaced by developed components.
-
-// Example page using some React Bootstrap components
+import Kegs from '../Kegs';
 
 function Page1() {
   return <div>page 1</div>;
@@ -28,7 +24,7 @@ function Page2() {
 }
 
 function Page3() {
-  return <div>page 3</div>;
+  return <Kegs></Kegs>;
 }
 
 function Home() {
@@ -42,6 +38,10 @@ function Home() {
 const MainRouter = () => {
   const apiContext = useContext<IContext>(ApiContext);
   const { logout, isAuthenticated } = apiContext;
+  const handleSelect = () => {
+    console.log('select');
+  };
+
   return (
     <Router data-test="component-app-main">
       <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
@@ -69,7 +69,7 @@ const MainRouter = () => {
           </Nav>
           { isAuthenticated
             ? (
-              <Nav>
+              <Nav onSelect={handleSelect}>
                 {
                   // todo: remove style from FontAwesomeIcon, move to SCSS or add another layout
                 }
@@ -80,8 +80,8 @@ const MainRouter = () => {
                   color="gray"
                 />
                 <NavDropdown alignRight title="" id="basic-nav-dropdown">
-                  <NavDropdown.Item className="disabled" href="#profile-page" onClick={logout}>My profile</NavDropdown.Item>
-                  <NavDropdown.Item className="disabled" href="#reservations-page" onClick={logout}>My reservations</NavDropdown.Item>
+                  <NavLink className="dropdown-item" to="/page1">My profile</NavLink>
+                  <NavLink className="dropdown-item" to="/page2">Change password</NavLink>
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="/" onClick={logout}>Logout</NavDropdown.Item>
                 </NavDropdown>
