@@ -1,12 +1,8 @@
 // Menu component with routing and login and user handling
 // This is main entrance to TESSA application
 import React, { useContext } from 'react';
-import {
-  Nav, Navbar, NavDropdown,
-} from 'react-bootstrap';
-import {
-  BrowserRouter as Router, Route, Switch, NavLink,
-} from 'react-router-dom';
+import { Nav, Navbar, NavDropdown, } from 'react-bootstrap';
+import { BrowserRouter as Router, NavLink, Route, Switch, } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import ApiContext from '../../context/context';
@@ -14,6 +10,7 @@ import { IContext } from '../../context/interface';
 import PrivateRoute from './PrivateRoute';
 import SignInPage from '../SignIn';
 import Kegs from '../Kegs';
+import { AuthStatus } from '../../context/state';
 
 function Page1() {
   return <div>page 1</div>;
@@ -37,7 +34,7 @@ function Home() {
 // render menu
 const MainRouter = () => {
   const apiContext = useContext<IContext>(ApiContext);
-  const { logout, isAuthenticated } = apiContext;
+  const { logout, loginState } = apiContext;
   const handleSelect = () => {
     console.log('select');
   };
@@ -67,7 +64,7 @@ const MainRouter = () => {
             <NavLink className="nav-link" to="/page3">page 3</NavLink>
 
           </Nav>
-          { isAuthenticated
+          { loginState === AuthStatus.LoginSuccess
             ? (
               <Nav onSelect={handleSelect}>
                 {

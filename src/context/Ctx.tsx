@@ -31,7 +31,6 @@ const config = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
 
-// firebase.initializeApp(config);
 console.log('Ctx started');
 
 class AppProvider extends Component<{}, IState> {

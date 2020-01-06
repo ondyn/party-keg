@@ -5,9 +5,7 @@ import { AppProvider } from '../../context/Ctx';
 
 const App: React.FC = () => (
   <State>
-    <AppProvider>
-      <MainRouter />
-    </AppProvider>
+    <MainRouter />
   </State>
 );
 

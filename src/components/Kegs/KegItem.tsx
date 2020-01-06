@@ -11,11 +11,11 @@ interface IProps {
 const KegItem = (props: IProps) => {
 
   const [editMode, setEditMode] = useState(false);
-  const [editText, setEditText] = useState(props.keg.text);
+  const [editText, setEditText] = useState(props.keg.name);
 
   const onToggleEditMode = () => {
     setEditMode(!editMode);
-    setEditText(props.keg.text);
+    setEditText(props.keg.name);
   };
 
   const onChangeEditText = (event: any) => {
@@ -37,10 +37,10 @@ const KegItem = (props: IProps) => {
         />
       ) : (
         <span>
-            <strong>{props.keg.userId}</strong>
-          {' '}
-          {props.keg.text}
-          {props.keg.editedAt && <span>(Edited)</span>}
+          {/*  <strong>{props.keg.brewery}</strong>*/}
+          {/*{' '}*/}
+          {props.keg.name}
+          {/*{props.keg.editedAt && <span>(Edited)</span>}*/}
           </span>
       )}
 

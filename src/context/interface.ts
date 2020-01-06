@@ -1,16 +1,15 @@
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
+import {AuthStatus} from './state';
 
 // context state
 export interface IContext {
-  isAuthenticated: boolean;
-  loading: boolean;
+  loginState: AuthStatus;
+  loadingData: boolean;
   user: any;
-  error: any;
-  // getSims: () => ISim[];
-  getDevices: () => any;
   login: (username: string, password: string) => void;
   logout: () => void;
-  setLoading: () => void;
-  fireDB: firebase.firestore.Firestore;
+  kegs: any;
+  putKeg:() => void;
+  beers: any;
+  putBeer:() => void;
+  addMember:() => void;
 }

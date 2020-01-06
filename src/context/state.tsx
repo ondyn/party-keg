@@ -1,6 +1,5 @@
-import React, { useReducer, FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import ApiContext from './context';
-import ApiReducer from './reducer';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -14,130 +13,147 @@ const config = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
 
+export enum AuthStatus {
+  LoggedOut,
+  LoginFail,
+  LoginSuccess,
+  LoggingIn
+}
+
+export interface IKeg {
+  uid: string;
+  name: string;
+  brewery: string;
+  epm: number;
+  volume: number;
+  price: number;
+  currency: string;
+  alc: number;
+  startTime: number;
+  stopTime: number;
+  isFinished: boolean;
+  owner: string;
+}
+
+export interface IUser {
+  email: string;
+  kegs: string[];
+  roles: any;
+  username: string;
+}
+
 firebase.initializeApp(config);
 console.log('starting backend');
 
-const ApiState: FunctionComponent  = ({ children }) => {
-  const initState = {
-    sims: [],
-    devices: [],
-    reservations: [],
-    token: localStorage.getItem('token'),
-    isAuthenticated: null,
-    loading: false,
-    user: null,
-    error: null,
-  };
+const ApiState: FunctionComponent = ({ children }) => {
 
-  const [state, dispatch] = useReducer(ApiReducer, initState);
-
-  const [listener, setListener] = useState(firebase.auth().onAuthStateChanged(
-    (authUser) => {
-      if ((authUser)) {
-        console.log('onAuthStateChanged'+JSON.stringify(authUser));
-        firebase.firestore().doc(`users/${authUser.uid}`)
-          .get()
-          .then((snapshot) => {
-            let dbUser = snapshot.data();
-            if (!dbUser && !dbUser!.roles) {
-              dbUser!.roles = {};
-            }
-            console.log('dbUser: ' + JSON.stringify(dbUser));
-
-            return ({
-              ...state,
-              user: { authUser , dbUser},
-            });
-          })
-      }
-      else {
-        console.log('onAuthStateChanged: logged out')
-      }
-    }
-  ));
+  const [loginState, setLoginState] = useState(AuthStatus.LoggedOut);
+  const [loadingData, setLoadingData] = useState(false);
+  const [user, setUser] = useState();
+  const [kegs, setKegs] = useState<IKeg[]>([]);
+  const [beers, setBeers] = useState();
 
   useEffect(() => {
-    console.log('init');
-    // firebase.initializeApp(config)
-    // eslint-disable-next-line
+    console.log('ApiState started');
+    firebase.auth().onAuthStateChanged(
+      (authUser) => {
+        if ((authUser)) {
+          console.log('onAuthStateChanged: ' + JSON.stringify(authUser));
+          firebase.firestore().doc(`users/${authUser.uid}`)
+            .get()
+            .then((snapshot) => {
+              let dbUser = snapshot.data();
+              if (!dbUser && !dbUser!.roles) {
+                dbUser!.roles = {};
+              }
+              console.log('dbUser found: ' + JSON.stringify(dbUser));
+              dbUser!.kegs.map((kegUid: string) => {
+                firebase.firestore().doc(`kegs/${kegUid}`)
+                  .get()
+                  .then((snapshot) => {
+                    console.log('loading keg ' + kegUid);
+                    const keg = snapshot.data();
+                    if (keg) {
+                      setKegs(prevState => [...prevState, {
+                        uid: kegUid,
+                        alc: keg!.alc,
+                        brewery: keg!.brewery,
+                        currency: keg!.currency,
+                        epm: keg!.epm,
+                        isFinished: keg!.IsFinished,
+                        name: keg!.name,
+                        owner: keg!.owner,
+                        price: keg!.price,
+                        startTime: keg!.startTime,
+                        stopTime: keg!.stopTime,
+                        volume: keg!.volume
+                      }])
+                    }
+                  });
+              });
+              setLoginState(AuthStatus.LoginSuccess);
+              setUser(dbUser);
+            })
+        } else {
+          console.log('onAuthStateChanged: logged out');
+          setLoginState(AuthStatus.LoggedOut);
+        }
+      }
+    )
   }, []);
-
-  // Set Loading
-  const setLoading = () => dispatch({ type: 'set_loading' });
-
-  // Load User todo more data
-  const loadUser = (username: string) => {
-    console.log('Setting the user');
-    return ({
-      ...state,
-      user: { username },
-    });
-  };
 
   // Login User
   const login = (email: string, password: string) => {
     try {
+      setLoginState(AuthStatus.LoggingIn);
       firebase
         .auth().signInWithEmailAndPassword(email, password)
         .then(() => {
-          dispatch({type:'login_success', payload: 'OK'});
+          console.log('login success');
+          // setLoginState(AuthStatus.LoginSuccess);
         })
         .catch((error: any) => {
-          dispatch({type:'login_fail', payload: error});
+          setLoginState(AuthStatus.LoginFail);
         });
     } catch (err) {
-      dispatch({
-        type: 'login_fail',
-        payload: err,
-      });
+      setLoginState(AuthStatus.LoginFail);
     }
   };
 
   // logout
   const logout = () => {
     firebase.auth().signOut();
-    dispatch({ type: 'logout', payload: 'logged out' });
+    setLoginState(AuthStatus.LoggedOut);
   };
 
-  // todo clear Errors
-  // const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
+  const putKeg = () => {
 
-  // get SIM list
-  const getSims = async () => {
-    setLoading();
-
-    try {
-
-      dispatch({
-        type: 'get_sims',
-        payload: 'data',
-      });
-    } catch {
-      dispatch({ type: 'auth_error', payload: 'error' });
-    }
   };
 
-  const getDevices = async () => {
-    setLoading();
+  const putBeer = () => {
+
+  };
+
+  const addMember = () => {
 
   };
 
   return (
     <ApiContext.Provider
       value={{
-        isAuthenticated: state.isAuthenticated,
-        loading: state.loading,
-        user: state.user,
-        error: state.error,
+        loginState,
+        loadingData: loadingData,
+        user: user,
         login,
         logout,
-        getDevices,
-        setLoading,
-        fireDB: firebase.firestore(),
+        kegs,
+        putKeg,
+        beers,
+        putBeer,
+        addMember,
       }}
     >
-      {/* eslint-disable-next-line react/destructuring-assignment,react/prop-types */}
-      { children }
+      {children}
     </ApiContext.Provider>
   );
 };

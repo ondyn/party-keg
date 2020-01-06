@@ -8,14 +8,9 @@ const KegList = (authUser: any,
                  onRemoveKeg: (uid: string) => void,
 ) => (
   <ul>
+    <li>{JSON.stringify(kegs)}</li>
     {kegs.length > 0 && kegs.map((keg: any) => (
-      <KegItem
-          userUid= { authUser.uid }
-          key={keg.uid}
-          keg={keg}
-          onEditKeg={onEditKeg}
-          onRemoveKeg={onRemoveKeg}
-      />
+      <li>ahoj</li>
     ))}
   </ul>
 );
