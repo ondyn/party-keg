@@ -20,10 +20,6 @@ function Page2() {
   return <div>page 2</div>;
 }
 
-function Page3() {
-  return <Kegs></Kegs>;
-}
-
 function Home() {
   return <div>home</div>;
 }
@@ -61,7 +57,7 @@ const MainRouter = () => {
 
             <NavLink className="nav-link" to="/page1">page 1</NavLink>
             <NavLink className="nav-link" to="/page2">page 2</NavLink>
-            <NavLink className="nav-link" to="/page3">page 3</NavLink>
+            <NavLink className="nav-link" to="/kegs">Kegs</NavLink>
 
           </Nav>
           { loginState === AuthStatus.LoginSuccess
@@ -96,7 +92,7 @@ const MainRouter = () => {
         <Route path="/page1" component={Page1} />
         <Route path="/page2" component={Page2} />
 
-        <PrivateRoute path="/page3/" component={Page3} />
+        <PrivateRoute path="/kegs/" component={Kegs} />
         <Route path="/login/" component={SignInPage} />
         <Route component={Home} />
       </Switch>

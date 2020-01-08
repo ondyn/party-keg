@@ -1,4 +1,4 @@
-import {AuthStatus} from './state';
+import { AuthStatus, IKeg } from './state';
 
 // context state
 export interface IContext {
@@ -8,7 +8,7 @@ export interface IContext {
   login: (username: string, password: string) => void;
   logout: () => void;
   kegs: any;
-  putKeg:() => void;
+  putKeg:(keg: IKeg) => void;
   beers: any;
   putBeer:() => void;
   addMember:() => void;

@@ -1,7 +1,9 @@
 import React, { Component, useContext, useEffect, useState } from 'react';
-import KegList from './KegList';
 import ApiContext from '../../context/context';
 import { IContext } from '../../context/interface';
+import { Button, Col, Container, ListGroup, Modal, Row } from 'react-bootstrap';
+import CreateKeg from './CreateKeg';
+import { IKeg } from '../../context/state';
 
 const Kegs = (authUser: any) => {
   const [text, setText] = useState('');
@@ -9,27 +11,26 @@ const Kegs = (authUser: any) => {
   const [limit, setLimit] = useState(5);
   const [unsubscribe, setUnsubscribe] = useState();
 
-  const ctx: IContext = useContext(ApiContext);
-  const {kegs, putKeg } = ctx;
+  const [showAddKeg, setShowAddKeg] = useState(false);
+  const handleShowAddKeg = () => setShowAddKeg(true);
+  const handleCloseAddKeg = () => setShowAddKeg(false);
 
-  useEffect(() => {
-    console.log(JSON.stringify(kegs));
-  },[kegs]);
+  const ctx: IContext = useContext(ApiContext);
+  const { kegs, putKeg } = ctx;
 
   const onChangeText = (event: any) => {
     setText(event.target.value);
   };
 
-  const onCreateKeg = (event: any, authUser: any) => {
-    putKeg();
-    setText('');
-    event.preventDefault();
+  const onCreateKeg = (keg: IKeg) => {
+    putKeg(keg);
+    handleCloseAddKeg();
   };
 
   const onEditKeg = (message: any, text: any) => {
     const { uid, ...messageSnapshot } = message;
 
-    putKeg();
+    // putKeg();
   };
 
   const onRemoveKeg = (uid: string) => {
@@ -40,40 +41,50 @@ const Kegs = (authUser: any) => {
     setLimit(limit + 5);
   };
 
+  const onKegClicked = () => {
+
+  };
+
+  const kegList = () => {
+    return (
+      <ListGroup defaultActiveKey="#link1">
+        {kegs.map((keg: any) => (
+          <ListGroup.Item key={keg.uid} action onClick={onKegClicked}>
+            {keg.name}
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+    )
+  };
+
   return (
-    <div>
-      {!loading && kegs && (
-        <button type="button" onClick={onNextPage}>
-          More
-        </button>
-      )}
+    <>
+      <Container>
+        <Row>
+          <Col>
+            {false && !loading && kegs && (
+              <button type="button" onClick={onNextPage}>
+                More
+              </button>
+            )}
 
-      {loading && <div>Loading ...</div>}
+            {loading && <div>Loading ...</div>}
 
-      {kegs && ( kegs.map((keg:any)=>(
-        <span>{keg.name}</span>
-        ))
-        // <KegList
-        //   authUser={authUser}
-        //   messages={kegs}
-        //   onEditKeg
-        //   onRemoveKeg
-        // />
-      )}
+            {
+              kegs && kegList()
+            }
 
-      {!kegs && <div>There are no messages ...</div>}
-
-      <form
-        onSubmit={(event) => onCreateKeg(event, authUser)}
-      >
-        <input
-          type="text"
-          value={text}
-          onChange={onChangeText}
-        />
-        <button type="submit">Send</button>
-      </form>
-    </div>
+            {!kegs && <div>You have no kegs ...</div>}
+          </Col>
+        </Row>
+        <Row style={{ textAlign: 'center', alignContent: 'center' }}>
+          <Col>
+            <Button onClick={handleShowAddKeg}>Add new keg</Button>
+          </Col>
+        </Row>
+      </Container>
+      <CreateKeg show={showAddKeg} onCreateKeg={onCreateKeg} onClose={handleCloseAddKeg} />
+    </>
   );
 };
 

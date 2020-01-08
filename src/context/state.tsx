@@ -24,13 +24,13 @@ export interface IKeg {
   uid: string;
   name: string;
   brewery: string;
-  epm: number;
-  volume: number;
-  price: number;
+  epm: number | null;
+  volume: number | null;
+  price: number | null;
   currency: string;
-  alc: number;
-  startTime: number;
-  stopTime: number;
+  alc: number | null;
+  startTime: number | null;
+  stopTime: number | null;
   isFinished: boolean;
   owner: string;
 }
@@ -42,23 +42,27 @@ export interface IUser {
   username: string;
 }
 
-firebase.initializeApp(config);
-console.log('starting backend');
-
 const ApiState: FunctionComponent = ({ children }) => {
 
   const [loginState, setLoginState] = useState(AuthStatus.LoggedOut);
   const [loadingData, setLoadingData] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<IUser>({
+    email: '',
+    kegs: [],
+    roles: '',
+    username: '',
+  });
+  const [userId, setUserId] = useState();
   const [kegs, setKegs] = useState<IKeg[]>([]);
   const [beers, setBeers] = useState();
 
   useEffect(() => {
-    console.log('ApiState started');
+    firebase.initializeApp(config);
+
     firebase.auth().onAuthStateChanged(
       (authUser) => {
         if ((authUser)) {
-          console.log('onAuthStateChanged: ' + JSON.stringify(authUser));
+          console.log('onAuthStateChanged: logged in');
           firebase.firestore().doc(`users/${authUser.uid}`)
             .get()
             .then((snapshot) => {
@@ -67,6 +71,7 @@ const ApiState: FunctionComponent = ({ children }) => {
                 dbUser!.roles = {};
               }
               console.log('dbUser found: ' + JSON.stringify(dbUser));
+              setUserId(authUser.uid);
               dbUser!.kegs.map((kegUid: string) => {
                 firebase.firestore().doc(`kegs/${kegUid}`)
                   .get()
@@ -92,7 +97,7 @@ const ApiState: FunctionComponent = ({ children }) => {
                   });
               });
               setLoginState(AuthStatus.LoginSuccess);
-              setUser(dbUser);
+              setUser(dbUser as IUser);
             })
         } else {
           console.log('onAuthStateChanged: logged out');
@@ -126,7 +131,49 @@ const ApiState: FunctionComponent = ({ children }) => {
     setLoginState(AuthStatus.LoggedOut);
   };
 
-  const putKeg = () => {
+  const putKeg = (keg: IKeg) => {
+    if (!keg.startTime)
+      keg.startTime = (new Date()).getTime();
+
+    if (!keg.owner)
+      keg.owner = userId;
+
+    console.log('adding keg: ' + JSON.stringify(keg));
+
+    // create new keg
+    firebase.firestore().collection(`kegs`).add({
+      alc: keg.alc,
+      brewery: keg.brewery,
+      currency: keg.currency,
+      epm: keg.epm,
+      isFinished: keg.isFinished,
+      name: keg.name,
+      owner: keg.owner,
+      price: keg.price,
+      startTime: firebase.firestore.Timestamp.fromMillis(keg.startTime),
+      stopTime: keg.stopTime? firebase.firestore.Timestamp.fromMillis(keg.stopTime): null,
+      volume: keg.volume,
+    })
+      .then(function (docRef) {
+        console.log("Keg successfully written", docRef.id);
+        // add to users kegs
+        //setUser(user => ({...user, ...user.kegs= [...user.kegs, docRef.id]}));
+
+
+        firebase.firestore().collection("users").doc(userId).set({
+          ...user, ...user.kegs= [...user.kegs, docRef.id]
+        })
+          .then(function() {
+            console.log("User updated");
+          })
+          .catch(function(error) {
+            console.error("Error writing user: ", error);
+          });
+
+      })
+      .catch(function (error) {
+        console.error("Error writing keg: ", error);
+      });
 
   };
 
