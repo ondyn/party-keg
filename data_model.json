@@ -33,11 +33,5 @@
         "owner": "user_uid"
       }
     }
-  },
-
-
-"uid":"aUk7D6h6PNaNoRBj2m66Ejh1dr02","displayName":null,"photoURL":null,"email":"ondyn@seznam.cz","emailVerified":true,"phoneNumber":null,"isAnonymous":false,"tenantId":null,"providerData":[{"uid":"ondyn@seznam.cz","displayName":null,"photoURL":null,"email":"ondyn@seznam.cz","phoneNumber":null,"providerId":"password"}],"apiKey":"AIzaSyA7dxBHgOYF1uysGr-ZUSkBlRORncuLNR0","appName":"[DEFAULT]","authDomain":"party-keg.firebaseapp.com","stsTokenManager":{"apiKey":"AIzaSyA7dxBHgOYF1uysGr-ZUSkBlRORncuLNR0","refreshToken":"AEu4IL142vMe6zVnLBCVVaL2XQyTJv_GbFnj7UIf8QRoF7B4bAwpJ-W24AooPwvCv_lyHfnHpswYJPF62swgEvXV-QR9sWAkICnizN4Nm7uNcMMkIPww8AHSM0sAr5YQnCyE5OU8itm0PiLWotHiV5tnD5Gzv8WBzkzA9o6E1m5ZjVzbaRAzLQaBdeCcaQGRhcbDEeU3Gbdn","accessToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6IjUxMjRjY2JhZDVkNWZiZjNiYTJhOGI1ZWE3MTE4NDVmOGNiMjZhMzYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vcGFydHkta2VnIiwiYXVkIjoicGFydHkta2VnIiwiYXV0aF90aW1lIjoxNTc4MzgyMjQyLCJ1c2VyX2lkIjoiYVVrN0Q2aDZQTmFOb1JCajJtNjZFamgxZHIwMiIsInN1YiI6ImFVazdENmg2UE5hTm9SQmoybTY2RWpoMWRyMDIiLCJpYXQiOjE1NzgzODIyNDIsImV4cCI6MTU3ODM4NTg0MiwiZW1haWwiOiJvbmR5bkBzZXpuYW0uY3oiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJvbmR5bkBzZXpuYW0uY3oiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.Le-u90t4tkjoetWHXjtNmi0gG49vnzSMTMZrQTuuLW3RzzJ4bkmxtLdjY5tWyU3I3Ec8YY0veYhG5m6G__Ky8TvNWCz_zBgmS3OkrhfmQYnXm0HT7YzUqCUWLdB-vv84vyo5pEaHvzpVEM5GwA8V05CBV4NXGBWI6k7mCEmdBZtXvw9IGhGLRcPAdmMG8VvgqYEiXOdOcPAEpSRZZXH4b7Z97G4UtDHHmfxCrtpl5th7vmiG8RnJtMQxBnx6GuiU3lPkoItiiqtnn7N3l8IUAmEc5Q7GWULzuotPHudrqoZTrqEESyJ84HkNjaTrKRN3J0wYoL9Azzpyfh6gbJ7guw","expirationTime":1578385840816},"redirectEventId":null,"lastLoginAt":"1578382242001","createdAt":"1563215329155"
-
-
-
+  }
 }
