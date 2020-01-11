@@ -35,6 +35,12 @@ const CreateKeg = ({ show, onCreateKeg, onClose }: CreateKegProps) => {
     setKeg({ ...keg, [name]: type === 'number' ? parseFloat(value) : value });
   };
 
+  const [formValid, setFormValid] = useState(false);
+
+  useEffect(() => {
+    keg.name === '' ? setFormValid(false) : setFormValid(true);
+  }, [keg.name]);
+
   return (
     <Modal show={showAddKeg} onHide={onClose} animation={false}>
       <Modal.Header closeButton>
@@ -96,7 +102,7 @@ const CreateKeg = ({ show, onCreateKeg, onClose }: CreateKegProps) => {
         <Button variant="secondary" onClick={onClose}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={() => onCreateKeg(keg)}>
+        <Button variant="primary" onClick={() => onCreateKeg(keg)} disabled={!formValid}>
           Create keg
         </Button>
       </Modal.Footer>

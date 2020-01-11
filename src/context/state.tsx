@@ -29,8 +29,8 @@ export interface IKeg {
   price: number | null;
   currency: string;
   alc: number | null;
-  startTime: number | null;
-  stopTime: number | null;
+  startTime: firebase.firestore.Timestamp | null;
+  stopTime: firebase.firestore.Timestamp | null;
   isFinished: boolean;
   owner: string;
 }
@@ -55,6 +55,53 @@ const ApiState: FunctionComponent = ({ children }) => {
   const [userId, setUserId] = useState();
   const [kegs, setKegs] = useState<IKeg[]>([]);
   const [beers, setBeers] = useState();
+  const [userCB, setUserCB] = useState();
+
+  const registerUserCB = (id: string) => {
+    if (userCB) {
+      userCB();
+    }
+    console.log('registering CB for user ', id);
+    firebase.firestore().collection("users").doc(id).onSnapshot(function (doc) {
+      console.log('user data changed');
+      // if (!doc.metadata.hasPendingWrites)
+      loadUsersKegs(doc.data()!.kegs.reverse());
+    });
+  };
+
+  useEffect(() => {
+    if (userId && userId !== '')
+      registerUserCB(userId);
+
+  }, [userId]);
+
+  const loadUsersKegs = (ids: string[]) => {
+    setKegs([])
+    ids.forEach((kegUid: string) => {
+      firebase.firestore().doc(`kegs/${kegUid}`)
+        .get()
+        .then((snapshot) => {
+          console.log('loading keg ' + kegUid);
+          const keg = snapshot.data();
+          if (keg) {
+            setKegs(prevState => [...prevState, {
+              uid: kegUid,
+              alc: keg!.alc,
+              brewery: keg!.brewery,
+              currency: keg!.currency,
+              epm: keg!.epm,
+              isFinished: keg!.IsFinished,
+              name: keg!.name,
+              owner: keg!.owner,
+              price: keg!.price,
+              startTime: keg!.startTime,
+              stopTime: keg!.stopTime,
+              volume: keg!.volume
+            }])
+          }
+        });
+    });
+  };
 
   useEffect(() => {
     firebase.initializeApp(config);
@@ -72,32 +119,10 @@ const ApiState: FunctionComponent = ({ children }) => {
               }
               console.log('dbUser found: ' + JSON.stringify(dbUser));
               setUserId(authUser.uid);
-              dbUser!.kegs.map((kegUid: string) => {
-                firebase.firestore().doc(`kegs/${kegUid}`)
-                  .get()
-                  .then((snapshot) => {
-                    console.log('loading keg ' + kegUid);
-                    const keg = snapshot.data();
-                    if (keg) {
-                      setKegs(prevState => [...prevState, {
-                        uid: kegUid,
-                        alc: keg!.alc,
-                        brewery: keg!.brewery,
-                        currency: keg!.currency,
-                        epm: keg!.epm,
-                        isFinished: keg!.IsFinished,
-                        name: keg!.name,
-                        owner: keg!.owner,
-                        price: keg!.price,
-                        startTime: keg!.startTime,
-                        stopTime: keg!.stopTime,
-                        volume: keg!.volume
-                      }])
-                    }
-                  });
-              });
+              //loadUsersKegs(dbUser!.kegs);
               setLoginState(AuthStatus.LoginSuccess);
               setUser(dbUser as IUser);
+              // registerUserCB(authUser.uid);
             })
         } else {
           console.log('onAuthStateChanged: logged out');
@@ -133,7 +158,7 @@ const ApiState: FunctionComponent = ({ children }) => {
 
   const putKeg = (keg: IKeg) => {
     if (!keg.startTime)
-      keg.startTime = (new Date()).getTime();
+      keg.startTime = firebase.firestore.Timestamp.now();
 
     if (!keg.owner)
       keg.owner = userId;
@@ -150,30 +175,52 @@ const ApiState: FunctionComponent = ({ children }) => {
       name: keg.name,
       owner: keg.owner,
       price: keg.price,
-      startTime: firebase.firestore.Timestamp.fromMillis(keg.startTime),
-      stopTime: keg.stopTime? firebase.firestore.Timestamp.fromMillis(keg.stopTime): null,
+      startTime: keg.startTime,
+      stopTime: keg.stopTime ? keg.stopTime : null,
       volume: keg.volume,
     })
       .then(function (docRef) {
         console.log("Keg successfully written", docRef.id);
         // add to users kegs
-        //setUser(user => ({...user, ...user.kegs= [...user.kegs, docRef.id]}));
 
-
-        firebase.firestore().collection("users").doc(userId).set({
-          ...user, ...user.kegs= [...user.kegs, docRef.id]
-        })
-          .then(function() {
-            console.log("User updated");
+        let newUser = { ...user };
+        newUser.kegs = [...newUser.kegs, docRef.id];
+        firebase.firestore().collection("users").doc(userId).set(newUser)
+          .then(function () {
+            console.log("User updated:", JSON.stringify(newUser));
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.error("Error writing user: ", error);
           });
-
       })
       .catch(function (error) {
         console.error("Error writing keg: ", error);
       });
+
+  };
+
+  const removeKeg = (kegId: string) => {
+    firebase.firestore().collection("kegs").doc(kegId).delete().then(function () {
+      console.log("Keg successfully deleted");
+    }).catch(function (error) {
+      console.error("Error removing keg: ", error);
+    });
+
+    let newUser = { ...user };
+    newUser.kegs = newUser.kegs.filter((keg => {
+      return keg !== kegId;
+    }));
+
+    firebase.firestore().collection("users").doc(userId).set(newUser)
+      .then(function () {
+        console.log("User updated:", JSON.stringify(newUser));
+      })
+      .catch(function (error) {
+        console.error("Error writing user: ", error);
+      });
+  };
+
+  const editKeg = () => {
 
   };
 
@@ -195,9 +242,12 @@ const ApiState: FunctionComponent = ({ children }) => {
         logout,
         kegs,
         putKeg,
+        removeKeg,
+        editKeg,
         beers,
         putBeer,
         addMember,
+        userId,
       }}
     >
       {children}
@@ -205,4 +255,9 @@ const ApiState: FunctionComponent = ({ children }) => {
   );
 };
 
+const timestampToString = (timestamp: firebase.firestore.Timestamp): string => {
+  return timestamp.toDate().toLocaleDateString();
+};
+
 export default ApiState;
+export {timestampToString};

@@ -1,71 +1,50 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
+import { IKeg } from '../../context/state';
+import { Button, Col, Row } from 'react-bootstrap';
+import * as firebase from 'firebase';
 
 interface IProps {
   userUid: string,
   onEditKeg: (message: any, editText: any) => void,
-  keg: any,
+  keg: IKeg,
   onRemoveKeg: (uid: string) => void
 
 }
 
 const KegItem = (props: IProps) => {
-
-  const [editMode, setEditMode] = useState(false);
-  const [editText, setEditText] = useState(props.keg.name);
-
-  const onToggleEditMode = () => {
-    setEditMode(!editMode);
-    setEditText(props.keg.name);
-  };
-
-  const onChangeEditText = (event: any) => {
-    setEditText(event.target.value);
-  };
-
-  const onSaveEditText = () => {
-    props.onEditKeg(props.keg, editText);
-    setEditMode(false);
-  };
-
   return (
-    <li>
-      {editMode ? (
-        <input
-          type="text"
-          value={editText}
-          onChange={onChangeEditText}
-        />
-      ) : (
-        <span>
-          {/*  <strong>{props.keg.brewery}</strong>*/}
-          {/*{' '}*/}
-          {props.keg.name}
-          {/*{props.keg.editedAt && <span>(Edited)</span>}*/}
+    <Row style={{ border: '1px solid #116466', margin: '3px' }}>
+      <Col style={{ padding: '0px' }}>
+        <div
+             style={{ width: '100%', overflow: 'hidden', textAlign: 'left', margin: '0px', padding: '0px 0px 0px 15px' }}
+             onClick={() => {
+             }}
+             onKeyPress={() => {
+             }}
+             role="button"
+             tabIndex={0}
+        >
+      <span
+        style={{ fontSize: '1.5em' }}
+      >
+        {/* step text */}
+        {props.keg.name}
+      </span>
+          <span style={{marginLeft: '20px'}}>
+            {props.keg.startTime!.toDate().toLocaleString()}
           </span>
-      )}
-
-      {props.userUid === props.keg.userId && (
-        <span>
-            {editMode ? (
-              <span>
-                <button onClick={onSaveEditText}>Save</button>
-                <button onClick={onToggleEditMode}>Reset</button>
-              </span>
-            ) : (
-              <button onClick={onToggleEditMode}>Edit</button>
-            )}
-
-          {!editMode && (
-            <button
-              type="button"
+          {props.userUid === props.keg.owner && (
+            <Button
+              style={{ float: 'right' }}
+              variant="danger"
               onClick={() => props.onRemoveKeg(props.keg.uid)}
             >
               Delete
-            </button>
+            </Button>
           )}
-          </span>
-      )}
-    </li>
+        </div>
+      </Col>
+    </Row>
   );
 };
 
