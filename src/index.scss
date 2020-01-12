@@ -32,28 +32,28 @@ $body-color: $gray-800;
 $font-family-sans-serif: Barlow;
 $font-size-base: 0.9375rem;
 $headings-font-weight: 300;
-$navbar-dark-hover-color: rgba($white,1);
-$navbar-light-hover-color: rgba($black,.9);
+$navbar-dark-hover-color: rgba($white, 1);
+$navbar-light-hover-color: rgba($black, .9);
 $alert-border-width: 0;
 $progress-height: 0.5rem;
 
 body {
   margin: 0;
   font-family: Barlow,
-    sans-serif;
+  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
 }
 
 //based on default Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-.navbar-link{
+.navbar-link {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   --blue: #116466;
   --indigo: #6610f2;
@@ -100,4 +100,12 @@ code {
   white-space: nowrap;
   background-color: transparent;
   border: 0;
+}
+
+.keg-item {
+  cursor: pointer;
+}
+
+.keg-item:hover {
+  box-shadow: 0 0 5px 0 #0c4445;
 }

@@ -15,7 +15,7 @@ const KegItem = (props: IProps) => {
   return (
     <Row style={{ border: '1px solid #116466', margin: '3px' }}>
       <Col style={{ padding: '0px' }}>
-        <div
+        <div className="keg-item"
              style={{ width: '100%', overflow: 'hidden', textAlign: 'left', margin: '0px', padding: '0px 0px 0px 15px' }}
              onClick={() => {
              }}

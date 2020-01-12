@@ -11,13 +11,10 @@ import PrivateRoute from './PrivateRoute';
 import SignInPage from '../SignIn';
 import Kegs from '../Kegs';
 import { AuthStatus } from '../../context/state';
+import KegPage from '../KegDetail/KegPage';
 
 function Page1() {
   return <div>page 1</div>;
-}
-
-function Page2() {
-  return <div>page 2</div>;
 }
 
 function Home() {
@@ -90,7 +87,7 @@ const MainRouter = () => {
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/page1" component={Page1} />
-        <Route path="/page2" component={Page2} />
+        <Route path="/page2" component={KegPage} />
 
         <PrivateRoute path="/kegs/" component={Kegs} />
         <Route path="/login/" component={SignInPage} />

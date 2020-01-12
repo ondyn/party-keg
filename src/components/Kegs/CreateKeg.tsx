@@ -111,11 +111,3 @@ const CreateKeg = ({ show, onCreateKeg, onClose }: CreateKegProps) => {
 };
 
 export default CreateKeg;
-
-// name: string;
-// brewery: string;
-// epm: number;
-// volume: number;
-// price: number;
-// currency: string;
-// alc: number;
