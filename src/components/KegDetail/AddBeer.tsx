@@ -46,6 +46,7 @@ const AddBeer = ({ show, onAddBeer, onClose, lastVolume, userId, lastTime, userN
               <ButtonGroup>
                 {[0.3, 0.5, 1].map((vol)=> (
                     <Button
+                      key={vol}
                         onClick={() => setVolume(vol)}>{vol.toLocaleString(navigator.languages[0])}&nbsp;l
                     </Button>
                 ))}

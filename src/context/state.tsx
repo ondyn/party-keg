@@ -64,43 +64,101 @@ const ApiState: FunctionComponent = ({ children }) => {
     console.log('registering CB for user ', id);
     firebase.firestore().collection("users").doc(id).onSnapshot(function (doc) {
       console.log('user data changed');
+      // todo update user data
+
       // if (!doc.metadata.hasPendingWrites)
-      loadUsersKegs(doc.data()!.kegs.reverse());
+      //loadUsersKegs(doc.data()!.kegs.reverse());
+    });
+  };
+
+  const registerUserKegsCB = (id: string) => {
+    console.log('registering CB for user ', id);
+    firebase.firestore().collection("users").doc(id).collection('kegs').onSnapshot(function (snapshot) {
+      console.log('user kegs changed');
+      // if (!doc.metadata.hasPendingWrites)
+      const kegIds: string[] = [];
+      snapshot.forEach(doc => kegIds.push(doc.id));
+
+      loadUsersKegs(kegIds);
     });
   };
 
   useEffect(() => {
-    if (userId && userId !== '')
+    if (userId && userId !== '') {
       registerUserCB(userId);
+      registerUserKegsCB(userId);
+    }
 
   }, [userId]);
 
   const loadUsersKegs = (ids: string[]) => {
-    setKegs([])
-    ids.forEach((kegUid: string) => {
-      firebase.firestore().doc(`kegs/${kegUid}`)
-        .get()
-        .then((snapshot) => {
-          console.log('loading keg ' + kegUid);
-          const keg = snapshot.data();
-          if (keg) {
-            setKegs(prevState => [...prevState, {
-              uid: kegUid,
-              alc: keg!.alc,
-              brewery: keg!.brewery,
-              currency: keg!.currency,
-              epm: keg!.epm,
-              isFinished: keg!.IsFinished,
-              name: keg!.name,
-              owner: keg!.owner,
-              price: keg!.price,
-              startTime: keg!.startTime,
-              stopTime: keg!.stopTime,
-              volume: keg!.volume
-            }])
-          }
+
+    // const myArr = [...kegs];
+    // //remove missing kegs
+    // const tmpArr = kegs.filter(keg => { return ids.some(d => d === keg.uid) });
+    console.log('Getting kegs for ids:', JSON.stringify(ids));
+    // console.log('kegs:',JSON.stringify( myArr));
+    // console.log(JSON.stringify(tmpArr));
+
+    // setKegs([]);
+    // db.collection('books').where(firebase.firestore.FieldPath.documentId(), '==', 'fK3ddutEpD2qQqRMXNW5').get()
+    //.where(firebase.firestore.FieldPath.documentId(), "in", listOfReferences)
+
+    if (ids.length > 0) {
+      firebase.firestore().collection('kegs').where(firebase.firestore.FieldPath.documentId(), 'in', ids).get().then((snapshot) => {
+        const tempKegs: IKeg[] = [];
+        snapshot.forEach((doc) => {
+          // console.log('Query: ',doc.data());
+          const keg = doc.data();
+          tempKegs.push({
+            uid: doc.id,
+            alc: keg!.alc,
+            brewery: keg!.brewery,
+            currency: keg!.currency,
+            epm: keg!.epm,
+            isFinished: keg!.IsFinished,
+            name: keg!.name,
+            owner: keg!.owner,
+            price: keg!.price,
+            startTime: keg!.startTime,
+            stopTime: keg!.stopTime,
+            volume: keg!.volume
+          })
         });
-    });
+        setKegs(tempKegs.sort((a, b) => {
+          if (a.startTime && b.startTime) {
+            return a.startTime > b.startTime ? -1 : a.startTime < b.startTime ? 1 : 0
+          } else
+            return 1
+        }));
+      });
+    } else setKegs([]);
+
+
+    // ids.forEach((kegUid: string) => {
+    //   firebase.firestore().doc(`kegs/${kegUid}`)
+    //     .get()
+    //     .then((snapshot) => {
+    //       console.log('loading keg ' + kegUid);
+    //       const keg = snapshot.data();
+    //       if (keg) {
+    //         setKegs(prevState => [...prevState, {
+    //           uid: kegUid,
+    //           alc: keg!.alc,
+    //           brewery: keg!.brewery,
+    //           currency: keg!.currency,
+    //           epm: keg!.epm,
+    //           isFinished: keg!.IsFinished,
+    //           name: keg!.name,
+    //           owner: keg!.owner,
+    //           price: keg!.price,
+    //           startTime: keg!.startTime,
+    //           stopTime: keg!.stopTime,
+    //           volume: keg!.volume
+    //         }])
+    //       }
+    //     });
+    // });
   };
 
   useEffect(() => {
@@ -157,8 +215,8 @@ const ApiState: FunctionComponent = ({ children }) => {
   };
 
   const putKeg = (keg: IKeg) => {
-    if (!keg.startTime)
-      keg.startTime = firebase.firestore.Timestamp.now();
+    //if (!keg.startTime)
+    keg.startTime = firebase.firestore.Timestamp.now();
 
     if (!keg.owner)
       keg.owner = userId;
@@ -183,15 +241,22 @@ const ApiState: FunctionComponent = ({ children }) => {
         console.log("Keg successfully written", docRef.id);
         // add to users kegs
 
-        let newUser = { ...user };
-        newUser.kegs = [...newUser.kegs, docRef.id];
-        firebase.firestore().collection("users").doc(userId).set(newUser)
-          .then(function () {
-            console.log("User updated:", JSON.stringify(newUser));
-          })
-          .catch(function (error) {
-            console.error("Error writing user: ", error);
-          });
+        firebase.firestore().collection('users').doc(userId).collection('kegs').doc(docRef.id).set({})
+          .then(() => console.log('keg added under users keg collection'))
+          .catch((error) => console.log(error));
+
+
+        // let newUser = { ...user };
+        // newUser.kegs = [...newUser.kegs, docRef.id];
+        // firebase.firestore().collection("users").doc(userId).set(newUser)
+        //   .then(function () {
+        //     console.log("User updated:", JSON.stringify(newUser));
+        //   })
+        //   .catch(function (error) {
+        //     console.error("Error writing user: ", error);
+        //   });
+
+
       })
       .catch(function (error) {
         console.error("Error writing keg: ", error);
@@ -200,24 +265,29 @@ const ApiState: FunctionComponent = ({ children }) => {
   };
 
   const removeKeg = (kegId: string) => {
+
     firebase.firestore().collection("kegs").doc(kegId).delete().then(function () {
       console.log("Keg successfully deleted");
     }).catch(function (error) {
       console.error("Error removing keg: ", error);
     });
 
-    let newUser = { ...user };
-    newUser.kegs = newUser.kegs.filter((keg => {
-      return keg !== kegId;
-    }));
+    firebase.firestore().collection('users').doc(userId).collection('kegs').doc(kegId).delete()
+      .then(() => console.log('keg removed'))
+      .catch((error) => console.log(error));
 
-    firebase.firestore().collection("users").doc(userId).set(newUser)
-      .then(function () {
-        console.log("User updated:", JSON.stringify(newUser));
-      })
-      .catch(function (error) {
-        console.error("Error writing user: ", error);
-      });
+    // let newUser = { ...user };
+    // newUser.kegs = newUser.kegs.filter((keg => {
+    //   return keg !== kegId;
+    // }));
+    //
+    // firebase.firestore().collection("users").doc(userId).set(newUser)
+    //   .then(function () {
+    //     console.log("User updated:", JSON.stringify(newUser));
+    //   })
+    //   .catch(function (error) {
+    //     console.error("Error writing user: ", error);
+    //   });
   };
 
   const editKeg = () => {
@@ -260,4 +330,4 @@ const timestampToString = (timestamp: firebase.firestore.Timestamp): string => {
 };
 
 export default ApiState;
-export {timestampToString};
+export { timestampToString };

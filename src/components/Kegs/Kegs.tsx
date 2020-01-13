@@ -41,17 +41,21 @@ const Kegs = () => {
 
   const kegList = () => (
     kegs.map((keg: IKeg) => (
-      <KegItem key={keg.uid} keg={keg} userUid={userId} onRemoveKeg={removeKeg} onEditKeg={editKeg} />
+      <KegItem key={keg.uid} keg={keg} userUid={userId} onRemoveKeg={removeKeg}
+               onEditKeg={editKeg} />
     ))
   );
 
   return (
     <>
       <Container>
+        {loadingData && <div>Loading ...</div>}
+        {kegs.length > 0 ? kegList() : <div>You have no kegs ...</div>}
+      </Container>
+      <Container>
         <Row style={{ marginTop: '5px' }}>
           <Col>
-            {loadingData && <div>Loading ...</div>}
-            {kegs.length > 0 ? kegList() : <div>You have no kegs ...</div>}
+
           </Col>
         </Row>
         <Row style={{ textAlign: 'center', alignContent: 'center', marginTop: '5px' }}>

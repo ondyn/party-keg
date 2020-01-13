@@ -6,7 +6,7 @@ const KegMenu = () => {
     <>
       <Button>Add user</Button>
       <Button>Show timeline</Button>
-      <Button>Finish keg</Button>
+      <Button variant="danger">Finish keg</Button>
     </>
   )
 };
