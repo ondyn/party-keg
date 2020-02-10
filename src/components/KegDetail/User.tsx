@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import AddBeer from './AddBeer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 
 interface IProps {
   userId: string;
@@ -69,7 +69,28 @@ const User = (props: IProps) => {
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>Kč</div>
       </Col>
       <Col style={{ padding: '0px', color: 'blue', textAlign: 'right' }}>
-        <Button style={{ width: '40px', height:'40px', padding: '0px 0px 6px 0px', textAlign: 'center', fontSize: '1.5em'}} onClick={handleShowAddBeer}>
+        <Button style={{
+          width: '40px',
+          height: '40px',
+          padding: '0px 0px 6px 0px',
+          textAlign: 'center',
+          fontSize: '1.5em'
+        }} onClick={handleShowAddBeer}>
+          <FontAwesomeIcon
+            className="align-middle"
+            icon={faChartLine}
+            transform="up-2 grow-3"
+          />
+        </Button>
+      </Col>
+      <Col style={{ padding: '0px', color: 'blue', textAlign: 'right' }}>
+        <Button style={{
+          width: '40px',
+          height: '40px',
+          padding: '0px 0px 6px 0px',
+          textAlign: 'center',
+          fontSize: '1.5em'
+        }} onClick={handleShowAddBeer}>
           <b>+</b></Button>
       </Col>
       <AddBeer show={showAddBeer} userName={name} lastTime={lastTime} userId={userId}

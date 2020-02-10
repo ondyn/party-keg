@@ -89,7 +89,8 @@ const MainRouter = () => {
         <Route path="/page1" component={Page1} />
         <Route path="/page2" component={KegPage} />
 
-        <PrivateRoute path="/kegs/" component={Kegs} />
+        <PrivateRoute exact path="/kegs" component={Kegs} />
+        <PrivateRoute path="/kegs/" component={KegPage} />
         <Route path="/login/" component={SignInPage} />
         <Route component={Home} />
       </Switch>
