@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
-const KegMenu = () => {
+const KegMenu = ({ kegId }: { kegId: string }) => {
   return (
     <>
       <Button>Add user</Button>

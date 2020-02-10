@@ -85,14 +85,11 @@ const MainRouter = () => {
         //  Routes definition
       }
       <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/page1" component={Page1} />
-        <Route path="/page2" component={KegPage} />
+        <Route path="/login" component={SignInPage} />
 
-        <PrivateRoute exact path="/kegs" component={Kegs} />
-        <PrivateRoute path="/kegs/" component={KegPage} />
-        <Route path="/login/" component={SignInPage} />
-        <Route component={Home} />
+        <PrivateRoute path="/kegs/:id" component={KegPage} />
+        <PrivateRoute component={Kegs} />
+
       </Switch>
     </Router>
   );
