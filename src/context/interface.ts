@@ -1,4 +1,7 @@
 import { AuthStatus, IKeg } from './state';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
 
 // context state
 export interface IContext {
@@ -15,4 +18,5 @@ export interface IContext {
   beers: any;
   putBeer:() => void;
   addMember:() => void;
+  db:(app?: firebase.app.App) => firebase.firestore.Firestore;
 }

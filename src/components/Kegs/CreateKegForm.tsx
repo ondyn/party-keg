@@ -8,7 +8,7 @@ type CreateKegProps = {
   onClose: () => void,
 };
 
-const CreateKeg = ({ show, onCreateKeg, onClose }: CreateKegProps) => {
+const CreateKegForm = ({ show, onCreateKeg, onClose }: CreateKegProps) => {
   const [showAddKeg, setShowAddKeg] = useState(false);
 
   const [keg, setKeg] = useState<IKeg>({
@@ -110,4 +110,4 @@ const CreateKeg = ({ show, onCreateKeg, onClose }: CreateKegProps) => {
   )
 };
 
-export default CreateKeg;
+export default CreateKegForm;

@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import ApiContext from '../../context/context';
 import { IContext } from '../../context/interface';
 import { Button, Col, Container, ListGroup, Modal, Row } from 'react-bootstrap';
-import CreateKeg from './CreateKeg';
+import CreateKegForm from './CreateKegForm';
 import { IKeg } from '../../context/state';
 import KegItem from './KegItem';
 
@@ -64,7 +64,7 @@ const Kegs = () => {
           </Col>
         </Row>
       </Container>
-      <CreateKeg show={showAddKeg} onCreateKeg={onCreateKeg} onClose={handleCloseAddKeg} />
+      <CreateKegForm show={showAddKeg} onCreateKeg={onCreateKeg} onClose={handleCloseAddKeg} />
     </>
   );
 };

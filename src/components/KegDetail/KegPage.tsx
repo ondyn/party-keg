@@ -17,8 +17,10 @@ interface ComponentProps extends RouteComponentProps<RouteInfo> {
 
 export const KegPage = ({ match }: ComponentProps) => {
   const ctx: IContext = useContext(ApiContext);
-  const { kegs } = ctx;
+  const { kegs, db } = ctx;
   const keg = kegs.find(keg => keg.uid === match.params.id);
+
+
 
   return (
     <Container>
@@ -29,7 +31,7 @@ export const KegPage = ({ match }: ComponentProps) => {
               <div>{keg ? keg.name : 'Keg not found...'}</div>
             </Col>
             <Col>
-              <KegMenu kegId={keg.uid} />
+              <KegMenu kegId={keg.uid} kegName={keg.name} />
             </Col>
           </Row>
           <UserList kegId={keg.uid} />

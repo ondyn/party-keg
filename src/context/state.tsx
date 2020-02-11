@@ -318,6 +318,7 @@ const ApiState: FunctionComponent = ({ children }) => {
         putBeer,
         addMember,
         userId,
+        db: firebase.firestore,
       }}
     >
       {children}

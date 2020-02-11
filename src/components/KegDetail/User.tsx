@@ -74,12 +74,11 @@ const User = (props: IProps) => {
           height: '40px',
           padding: '0px 0px 6px 0px',
           textAlign: 'center',
-          fontSize: '1.5em'
         }} onClick={handleShowAddBeer}>
           <FontAwesomeIcon
             className="align-middle"
             icon={faChartLine}
-            transform="up-2 grow-3"
+            transform="up-1 grow-2"
           />
         </Button>
       </Col>
