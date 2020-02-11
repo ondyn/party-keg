@@ -24,7 +24,7 @@ const UserList = ({ users, addBeer, beers, volumePrice }: { volumePrice: number,
           actualVolume={volume}
           alcInBlood={0.2}
           beerCount={userBeers.length}
-          beerPrice={Math.round(volume * volumePrice)}
+          beerPrice={volumePrice != -1 ? Math.round(volume * volumePrice): -1}
           lastTime={ (userBeers.length>0 && userBeers[0] && userBeers[0].createTime)? userBeers[0].createTime!.toDate().toLocaleString(): ''}
           name={user.name}
           userId={user.id}

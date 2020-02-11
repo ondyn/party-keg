@@ -68,7 +68,7 @@ const User = (props: IProps) => {
       </Col>
       <Col style={{ textAlign: 'center' }}>
         <div>
-          {beerPrice}
+          {beerPrice != -1 ? beerPrice : '-unknown-'}
         </div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>Kč</div>
       </Col>

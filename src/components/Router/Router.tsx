@@ -2,7 +2,7 @@
 // This is main entrance to TESSA application
 import React, { useContext } from 'react';
 import { Nav, Navbar, NavDropdown, } from 'react-bootstrap';
-import { BrowserRouter as Router, NavLink, Route, Switch, } from 'react-router-dom';
+import { BrowserRouter as Router, NavLink, Route, Switch, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import ApiContext from '../../context/context';
@@ -12,6 +12,7 @@ import SignInPage from '../SignIn';
 import Kegs from '../Kegs';
 import { AuthStatus } from '../../context/state';
 import KegPage from '../KegDetail/KegPage';
+import BreadCrumb from './BreadCrumb';
 
 // render menu
 const MainRouter = () => {
@@ -24,27 +25,12 @@ const MainRouter = () => {
   return (
     <Router data-test="component-app-main">
       <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
-        <Navbar.Brand href="/">
-          Party Keg
-        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          {
-            // Menu
-          }
+
+          <BreadCrumb />
           <Nav className="mr-auto">
-            <NavLink
-              className="nav-link"
-              exact
-              to="/"
-            >
-              Home
-            </NavLink>
-
-            <NavLink className="nav-link" to="/page1">page 1</NavLink>
-            <NavLink className="nav-link" to="/page2">page 2</NavLink>
             <NavLink className="nav-link" to="/kegs">Kegs</NavLink>
-
           </Nav>
           { loginState === AuthStatus.LoginSuccess
             ? (

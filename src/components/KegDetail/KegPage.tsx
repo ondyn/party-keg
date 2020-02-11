@@ -8,6 +8,7 @@ import ApiContext from '../../context/context';
 import { IBeer, IKegUser } from './interface';
 import * as firebase from 'firebase';
 import { IKeg } from '../../context/state';
+import KegInfo from './KegInfo';
 
 interface RouteInfo {
   id: string;
@@ -105,24 +106,17 @@ export const KegPage = ({ match }: ComponentProps) => {
     }
   }, [kegs, kegId]);
 
+  const volumePrice = (keg && keg.price && keg.volume) ? keg.price / keg.volume : -1;
   return (
     <Container>
       {keg ?
         <>
-          <Row>
-            <Col>
-              <div>{`${keg.name} ${drunkVolume ? Math.round(drunkVolume * 2 * 10) / 10 : 0}/${keg.volume ? keg.volume * 2 : 'unknown'}`}</div>
-            </Col>
-            <Col>
-              <KegMenu kegId={keg.uid} kegName={keg.name} />
-            </Col>
-          </Row>
+          <KegInfo uid={keg.uid} volumePrice={volumePrice} drunkVolume={drunkVolume} volume={keg.volume} name={keg.name} created={keg.startTime} />
           <UserList users={kegUsers} beers={beers} addBeer={addBeer}
-                    volumePrice={(keg && keg.price && keg.volume) ? keg.price / keg.volume : 0} />
+                    volumePrice={volumePrice} />
         </> :
         <Row><h3>Keg not found...</h3></Row>
       }
-
     </Container>
   )
 };

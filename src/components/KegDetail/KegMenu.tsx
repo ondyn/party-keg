@@ -29,7 +29,7 @@ const KegMenu = ({ kegId, kegName }: { kegId: string, kegName: string }) => {
   return (
     <>
       <Button onClick={handleShowAddUser} >Add user</Button>
-      <Button>Show timeline</Button>
+      <Button>Timeline</Button>
       <Button variant="danger">Finish keg</Button>
       <CreateUserForm kegName={kegName} show={showAddUser} onCreateUser={addKegUser} onClose={handleCloseAddUser} />
     </>
