@@ -13,17 +13,6 @@ import Kegs from '../Kegs';
 import { AuthStatus } from '../../context/state';
 import KegPage from '../KegDetail/KegPage';
 
-function Page1() {
-  return <div>page 1</div>;
-}
-
-function Home() {
-  return <div>home</div>;
-}
-
-// end of Temp pages
-// ################################################################################################
-
 // render menu
 const MainRouter = () => {
   const apiContext = useContext<IContext>(ApiContext);

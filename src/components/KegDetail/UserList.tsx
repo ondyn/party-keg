@@ -1,72 +1,35 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import React from 'react';
 import User from './User';
-import AddBeer from './AddBeer';
-import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
-import { IContext } from '../../context/interface';
-import ApiContext from '../../context/context';
-import { IKeg } from '../../context/state';
-import { IKegUser } from './interface';
+import { IBeer, IKegUser } from './interface';
 
-const UserList = ({ kegId }: { kegId: string }) => {
-  const ctx: IContext = useContext(ApiContext);
-  const [kegUsers, setKegUsers] = useState<IKegUser[]>([]);
-  const { db } = ctx;
-
-  const getKegUsers = () => {
-    db().collection(`kegs`).doc(kegId).collection('users').get()
-      .then((snapshot) => {
-        const users: IKegUser[] = [];
-        snapshot.forEach((doc) => {
-          // console.log('Query: ',doc.data());
-          const user = doc.data();
-          users.push({
-            id: doc.id,
-            name: user.name,
-            createTime: user.createTime,
-          })
-        });
-        setKegUsers(users);
-      })
-  };
-
-  const registerKegsUserCB = (id: string) => {
-    console.log('registering CB for keg users', id);
-    firebase.firestore().collection("kegs").doc(id).collection('users').onSnapshot(function (snapshot) {
-      console.log('kegs users changed');
-      const users: IKegUser[] = [];
-      snapshot.forEach(doc => users.push({ name: doc.data().name, id: doc.id, createTime: doc.data().createTime }));
-
-      setKegUsers(users.sort((a, b) => {
-        if (a.createTime && b.createTime) {
-          return a.createTime > b.createTime ? 1 : a.createTime < b.createTime ? -1 : 0
-        } else
-          return 1
-      }));
-    });
-  };
-
-  // load kegs users on mount
-  useEffect(() => {
-    // getKegUsers();
-    registerKegsUserCB(kegId);
-  }, []);
+const UserList = ({ users, addBeer, beers, volumePrice }: { volumePrice: number, users: IKegUser[], beers: IBeer[], addBeer: (userId: string, volume: number) => void }) => {
 
   return (
     <>
-      {kegUsers.map(user =>
-        <User
+      {users.map(user => {
+
+        const userBeers = beers.filter(beer => beer.userId === user.id).sort(((a, b) => {
+          if (a.createTime && b.createTime) {
+            return a.createTime > b.createTime ? -1 : a.createTime < b.createTime ? 1 : 0
+          } else
+            return 1
+        }));
+
+        const volume = userBeers.reduce((part, beer) => part + beer.volume, 0);
+
+        return <User
           key={user.id}
-          actualVolume={0.5}
+          actualVolume={volume}
           alcInBlood={0.2}
-          beerCount={6}
-          beerPrice={89}
-          lastTime={(new Date()).toLocaleString()}
+          beerCount={userBeers.length}
+          beerPrice={Math.round(volume * volumePrice)}
+          lastTime={ (userBeers.length>0 && userBeers[0] && userBeers[0].createTime)? userBeers[0].createTime!.toDate().toLocaleString(): ''}
           name={user.name}
-          userId="abcd" />
-      )
+          userId={user.id}
+          addBeer={addBeer} />
+      })
       }
     </>
   )

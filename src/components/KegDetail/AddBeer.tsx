@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Button, ButtonGroup, Col, Form, Modal } from 'react-bootstrap';
-import { IKeg } from '../../context/state';
 
 type IProps = {
   show: boolean,
@@ -21,7 +20,7 @@ const AddBeer = ({ show, onAddBeer, onClose, lastVolume, userId, lastTime, userN
   }, [show]);
 
   const onChange = (event: any) => {
-    const { name, value, type } = event.target;
+    const { value} = event.target;
     setVolume(parseFloat(value));
   };
 

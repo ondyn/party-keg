@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { IContext } from '../../context/interface';
 import ApiContext from '../../context/context';
-import CreateKegForm from '../Kegs/CreateKegForm';
 import CreateUserForm from './CreateUserForm';
 import * as firebase from 'firebase';
 
@@ -15,8 +14,6 @@ const KegMenu = ({ kegId, kegName }: { kegId: string, kegName: string }) => {
   const handleCloseAddUser = () => setShowAddUser(false);
 
   const addKegUser = ({ name }: { name: string }) => {
-    db().collection(`kegs`).doc(kegId).collection('users')
-
     db().collection(`kegs`).doc(kegId).collection('users').add({
       name,
       createTime: firebase.firestore.Timestamp.now(),

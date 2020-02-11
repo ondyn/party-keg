@@ -2,6 +2,7 @@ import { AuthStatus, IKeg } from './state';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import { Crud } from '../components/Kegs/Kegs';
 
 // context state
 export interface IContext {
@@ -12,10 +13,9 @@ export interface IContext {
   login: (username: string, password: string) => void;
   logout: () => void;
   kegs: IKeg[];
-  putKeg:(keg: IKeg) => void;
+  putKeg:(keg: IKeg, variant: Crud) => void;
   removeKeg:(kegId: string) => void;
   editKeg:(kegId: string) => void;
-  beers: any;
   putBeer:() => void;
   addMember:() => void;
   db:(app?: firebase.app.App) => firebase.firestore.Firestore;

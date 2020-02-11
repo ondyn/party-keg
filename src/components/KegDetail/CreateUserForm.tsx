@@ -1,6 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import { Button, Col, Form, Modal } from 'react-bootstrap';
-import { IKeg } from '../../context/state';
 import { IKegUser } from './interface';
 
 type CreateUserProps = {

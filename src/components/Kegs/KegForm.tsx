@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Button, Col, Form, Modal } from 'react-bootstrap';
 import { IKeg } from '../../context/state';
+import { Crud } from './Kegs';
 
-type CreateKegProps = {
+const KegForm = ({ show, onFromSubmit, variant, onClose, keg: initKeg }: {
   show: boolean,
-  onCreateKeg: (keg: IKeg) => void,
+  onFromSubmit: (keg: IKeg, variant: Crud) => void,
   onClose: () => void,
-};
-
-const CreateKegForm = ({ show, onCreateKeg, onClose }: CreateKegProps) => {
+  variant: Crud,
+  keg: IKeg | null,
+}) => {
   const [showAddKeg, setShowAddKeg] = useState(false);
 
-  const [keg, setKeg] = useState<IKeg>({
+  const [keg, setKeg] = useState<IKeg>(initKeg || {
     name: '',
     volume: null,
     stopTime: null,
@@ -44,14 +45,14 @@ const CreateKegForm = ({ show, onCreateKeg, onClose }: CreateKegProps) => {
   return (
     <Modal show={showAddKeg} onHide={onClose} animation={false}>
       <Modal.Header closeButton>
-        <Modal.Title>Add new keg</Modal.Title>
+        <Modal.Title>{variant === Crud.Create ? 'Add new keg' : 'Edit keg'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={(event: FormEvent<HTMLFormElement>) => { console.log('submit'); onFromSubmit(keg, variant); event.preventDefault();}}>
           <Form.Row>
             <Form.Group as={Col} controlId="formGroupName">
               <Form.Label>Name</Form.Label>
-              <Form.Control name="name" placeholder="keg name" value={keg.name}
+              <Form.Control autoFocus name="name" placeholder="keg name" value={keg.name}
                             onChange={onChange} />
             </Form.Group>
           </Form.Row>
@@ -102,12 +103,12 @@ const CreateKegForm = ({ show, onCreateKeg, onClose }: CreateKegProps) => {
         <Button variant="secondary" onClick={onClose}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={() => onCreateKeg(keg)} disabled={!formValid}>
-          Create keg
+        <Button variant="primary" onClick={() => onFromSubmit(keg, variant)} disabled={!formValid}>
+          {variant === Crud.Create ? 'Create keg' : 'Update keg'}
         </Button>
       </Modal.Footer>
     </Modal>
   )
 };
 
-export default CreateKegForm;
+export default KegForm;

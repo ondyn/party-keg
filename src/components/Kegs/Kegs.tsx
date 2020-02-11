@@ -1,48 +1,34 @@
 import React, { useContext, useState } from 'react';
 import ApiContext from '../../context/context';
 import { IContext } from '../../context/interface';
-import { Button, Col, Container, ListGroup, Modal, Row } from 'react-bootstrap';
-import CreateKegForm from './CreateKegForm';
+import { Button, Col, Container, Row } from 'react-bootstrap';
+import KegForm from './KegForm';
 import { IKeg } from '../../context/state';
 import KegItem from './KegItem';
 
-const Kegs = () => {
-  const [limit, setLimit] = useState(5);
+export enum Crud {
+  Create,
+  Read,
+  Update,
+  Delete
+}
 
+const Kegs = () => {
   const [showAddKeg, setShowAddKeg] = useState(false);
   const handleShowAddKeg = () => setShowAddKeg(true);
   const handleCloseAddKeg = () => setShowAddKeg(false);
 
   const ctx: IContext = useContext(ApiContext);
-  const { kegs, putKeg, userId, removeKeg, editKeg, loadingData } = ctx;
+  const { kegs, putKeg, userId, loadingData } = ctx;
 
-  const onCreateKeg = (keg: IKeg) => {
-    putKeg(keg);
+  const onCreateKeg = (keg: IKeg, variant: Crud ) => {
+    putKeg(keg, variant);
     handleCloseAddKeg();
-  };
-
-  const onEditKeg = (message: any, text: any) => {
-    const { uid, ...messageSnapshot } = message;
-
-    // putKeg();
-  };
-
-  const onRemoveKeg = (uid: string) => {
-    // todo implement keg deletition
-  };
-
-  const onNextPage = () => {
-    setLimit(limit + 5);
-  };
-
-  const onKegClicked = () => {
-
   };
 
   const kegList = () => (
     kegs.map((keg: IKeg) => (
-      <KegItem key={keg.uid} keg={keg} userUid={userId} onRemoveKeg={removeKeg}
-               onEditKeg={editKeg} />
+      <KegItem key={keg.uid} keg={keg} userUid={userId} />
     ))
   );
 
@@ -64,7 +50,8 @@ const Kegs = () => {
           </Col>
         </Row>
       </Container>
-      <CreateKegForm show={showAddKeg} onCreateKeg={onCreateKeg} onClose={handleCloseAddKeg} />
+      <KegForm variant={Crud.Create} show={showAddKeg} onFromSubmit={onCreateKeg} onClose={handleCloseAddKeg} keg={null} />
+
     </>
   );
 };

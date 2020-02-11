@@ -5,3 +5,9 @@ export interface IKegUser {
   id: string,
   createTime: firebase.firestore.Timestamp | null;
 }
+
+export interface IBeer {
+  volume: number,
+  userId: string,
+  createTime: firebase.firestore.Timestamp | null;
+}

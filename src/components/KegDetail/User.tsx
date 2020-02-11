@@ -12,6 +12,7 @@ interface IProps {
   beerCount: number;
   actualVolume: number;
   beerPrice: number;
+  addBeer: (userId: string, volume: number) => void;
 }
 
 const User = (props: IProps) => {
@@ -20,25 +21,22 @@ const User = (props: IProps) => {
     userId,
     lastTime,
     alcInBlood,
-    beerCount,
     actualVolume,
-    beerPrice
+    beerPrice,
+    addBeer,
   } = props;
-
 
   const [showAddBeer, setShowAddBeer] = useState(false);
   const handleCloseAddBeer = () => setShowAddBeer(false);
   const handleShowAddBeer = () => setShowAddBeer(true);
 
-  const [volume, setVolume] = useState(actualVolume);
+  const [volume, setVolume] = useState(0.5);
 
   const onAddBeer = (userId: string, volume: number) => {
     setVolume(volume);
+    // write beer to DB
+    addBeer(userId, volume);
     handleCloseAddBeer();
-  };
-
-  const onChangeVolume = () => {
-
   };
 
   return (
@@ -47,25 +45,31 @@ const User = (props: IProps) => {
         {name}
       </Col>
       <Col xs={3} style={{ textAlign: 'center' }}>
-        {lastTime}
+        <div>{lastTime ? lastTime : '-never-'}</div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>last beer time</div>
       </Col>
       <Col style={{ textAlign: 'center' }}>
-        <span>
-        {alcInBlood}
-        </span>
+        <div>
+          {alcInBlood}
+        </div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>&permil;&nbsp;in blood</div>
       </Col>
+      {/*<Col style={{ textAlign: 'center' }}>*/}
+      {/*  <span>*/}
+      {/*  {beerCount}*/}
+      {/*  </span>*/}
+      {/*  <div style={{ fontSize: '0.8em', marginTop: '-5px' }}># beers</div>*/}
+      {/*</Col>*/}
       <Col style={{ textAlign: 'center' }}>
-        <span>
-        {beerCount / 0.5}
-        </span>
+        <div>
+          {Math.round(actualVolume / 0.5 * 10) / 10}
+        </div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>beers</div>
       </Col>
       <Col style={{ textAlign: 'center' }}>
-        <span>
-        {beerPrice}
-        </span>
+        <div>
+          {beerPrice}
+        </div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>Kč</div>
       </Col>
       <Col style={{ padding: '0px', color: 'blue', textAlign: 'right' }}>
