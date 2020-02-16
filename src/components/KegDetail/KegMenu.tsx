@@ -14,26 +14,32 @@ const KegMenu = ({ kegId, kegName }: { kegId: string, kegName: string }) => {
   const handleCloseAddUser = () => setShowAddUser(false);
 
   const addKegUser = ({ name }: { name: string }) => {
-    db().collection(`kegs`).doc(kegId).collection('users').add({
-      name,
-      createTime: firebase.firestore.Timestamp.now(),
-    })
-      .then(function (docRef) {
-        console.log("User successfully written", docRef.id);
+    db().collection('kegs').doc(kegId).collection('users')
+      .add({
+        name,
+        createTime: firebase.firestore.Timestamp.now(),
       })
-      .catch(function (error) {
-        console.error("Error writing keg user: ", error);
+      .then((docRef) => {
+        console.log('User successfully written', docRef.id);
+      })
+      .catch((error) => {
+        console.error('Error writing keg user: ', error);
       });
     handleCloseAddUser();
   };
   return (
     <>
-      <Button onClick={handleShowAddUser} >Add user</Button>
+      <Button onClick={handleShowAddUser}>Add user</Button>
       <Button>Timeline</Button>
       <Button variant="danger">Finish keg</Button>
-      <CreateUserForm kegName={kegName} show={showAddUser} onCreateUser={addKegUser} onClose={handleCloseAddUser} />
+      <CreateUserForm
+        kegName={kegName}
+        show={showAddUser}
+        onCreateUser={addKegUser}
+        onClose={handleCloseAddUser}
+      />
     </>
-  )
+  );
 };
 
 export default KegMenu;

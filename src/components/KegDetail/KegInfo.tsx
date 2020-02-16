@@ -1,12 +1,22 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import * as firebase from 'firebase';
 import KegMenu from './KegMenu';
 
-const KegInfo = ({ uid, name, drunkVolume, volume, created, volumePrice }: { uid: string, volumePrice: number, name: string, drunkVolume: number, volume: number | null, created: firebase.firestore.Timestamp | null }) => {
+const KegInfo = (
+  {
+    uid, name, drunkVolume, volume, created, volumePrice,
+  }: {
+    uid: string,
+    volumePrice: number,
+    name: string,
+    drunkVolume: number,
+    volume: number | null,
+    created: firebase.firestore.Timestamp | null
+  },
+) => {
   const drunkBeers = drunkVolume ? Math.round(drunkVolume * 2 * 10) / 10 : -1;
-  const drunkBeersString = drunkBeers != -1 ? drunkBeers : '-unknown-';
-  const danger = volume && drunkBeers > volume * 2 ? true : false;
+  const drunkBeersString = drunkBeers !== -1 ? drunkBeers : '-unknown-';
+  const danger = volume && drunkBeers > volume * 2;
 
   const style = {
     color: danger ? '#e83e8c' : 'white',
@@ -32,7 +42,7 @@ const KegInfo = ({ uid, name, drunkVolume, volume, created, volumePrice }: { uid
       </Col>
       <Col style={{ textAlign: 'center' }}>
         <div>
-          {volumePrice != -1 ? Math.round(volumePrice * 100) / 100 : '-unknown-'}
+          {volumePrice !== -1 ? Math.round(volumePrice * 100) / 100 : '-unknown-'}
         </div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>beer price</div>
       </Col>
@@ -40,6 +50,6 @@ const KegInfo = ({ uid, name, drunkVolume, volume, created, volumePrice }: { uid
         <KegMenu kegId={uid} kegName={name} />
       </Col>
     </Row>
-  )
+  );
 };
 export default KegInfo;

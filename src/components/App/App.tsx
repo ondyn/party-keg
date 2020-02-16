@@ -19,11 +19,11 @@ const App: React.FC = () => {
   // Launch fullscreen for browsers that support it!
   // launchFullScreen(document.documentElement); // the whole page
 
-  return(
-  <State>
-    <MainRouter />
-  </State>
-  )
+  return (
+    <State>
+      <MainRouter />
+    </State>
+  );
 };
 
 export default App;
