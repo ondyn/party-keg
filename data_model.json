@@ -1,0 +1,37 @@
+{
+  "users": {
+    "user_uid": {
+      "username": "ondra hnyk",
+      "email": "ondrej.hnyk@gmail.com",
+      "admin": true,
+      "kegs": {
+        "keg1_uid": true,
+        "keg2_uid": true
+      }
+    }
+  },
+  "kegs": {
+    "keg1_uid": {
+      "name": "Kozel 10",
+      "brewery": "Velkopopovický Kozel",
+      "epm": 10,
+      "volume": 50,
+      "price": 1570,
+      "currency": "CZK",
+      "alc": 4.2,
+      "startTime": 1563477351,
+      "stopTime": 0,
+      "isFinished": false,
+      "owner": "user_uid"
+    }
+  },
+  "beers": {
+    "keg1_uid": {
+      "beer1_uid": {
+        "startTime": 1563477351,
+        "volume": 0.5,
+        "owner": "user_uid"
+      }
+    }
+  }
+}

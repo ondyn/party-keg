@@ -1,75 +1,38 @@
 // Menu component with routing and login and user handling
 // This is main entrance to TESSA application
 import React, { useContext } from 'react';
-import {
-  Nav, Navbar, NavDropdown,
-} from 'react-bootstrap';
-import {
-  BrowserRouter as Router, Route, Switch, NavLink,
-} from 'react-router-dom';
+import { Nav, Navbar, NavDropdown, } from 'react-bootstrap';
+import { BrowserRouter as Router, NavLink, Route, Switch, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import ApiContext from '../../context/context';
 import { IContext } from '../../context/interface';
 import PrivateRoute from './PrivateRoute';
 import SignInPage from '../SignIn';
-// ################################################################################################
-// Temp pages
-// They will be replaced by developed components.
-
-// Example page using some React Bootstrap components
-
-function Page1() {
-  return <div>page 1</div>;
-}
-
-function Page2() {
-  return <div>page 2</div>;
-}
-
-function Page3() {
-  return <div>page 3</div>;
-}
-
-function Home() {
-  return <div>home</div>;
-}
-
-// end of Temp pages
-// ################################################################################################
+import Kegs from '../Kegs';
+import { AuthStatus } from '../../context/state';
+import KegPage from '../KegDetail/KegPage';
+import BreadCrumb from './BreadCrumb';
 
 // render menu
 const MainRouter = () => {
   const apiContext = useContext<IContext>(ApiContext);
-  const { logout, isAuthenticated } = apiContext;
+  const { logout, loginState } = apiContext;
+  const handleSelect = () => {
+    console.log('select');
+  };
+
   return (
     <Router data-test="component-app-main">
       <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
-        <Navbar.Brand href="/">
-          Party Keg
-        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          {
-            // Menu
-          }
           <Nav className="mr-auto">
-            <NavLink
-              className="nav-link"
-              exact
-              to="/"
-            >
-              Home
-            </NavLink>
-
-            <NavLink className="nav-link" to="/page1">page 1</NavLink>
-            <NavLink className="nav-link" to="/page2">page 2</NavLink>
-            <NavLink className="nav-link" to="/page3">page 3</NavLink>
-
+            <BreadCrumb />
           </Nav>
-          { isAuthenticated
+          { loginState === AuthStatus.LoginSuccess
             ? (
-              <Nav>
+              <Nav onSelect={handleSelect}>
                 {
                   // todo: remove style from FontAwesomeIcon, move to SCSS or add another layout
                 }
@@ -80,8 +43,8 @@ const MainRouter = () => {
                   color="gray"
                 />
                 <NavDropdown alignRight title="" id="basic-nav-dropdown">
-                  <NavDropdown.Item className="disabled" href="#profile-page" onClick={logout}>My profile</NavDropdown.Item>
-                  <NavDropdown.Item className="disabled" href="#reservations-page" onClick={logout}>My reservations</NavDropdown.Item>
+                  <NavLink className="dropdown-item" to="/page1">My profile</NavLink>
+                  <NavLink className="dropdown-item" to="/page2">Change password</NavLink>
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="/" onClick={logout}>Logout</NavDropdown.Item>
                 </NavDropdown>
@@ -95,13 +58,11 @@ const MainRouter = () => {
         //  Routes definition
       }
       <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/page1" component={Page1} />
-        <Route path="/page2" component={Page2} />
+        <Route path="/login" component={SignInPage} />
 
-        <PrivateRoute path="/page3/" component={Page3} />
-        <Route path="/login/" component={SignInPage} />
-        <Route component={Home} />
+        <PrivateRoute path="/kegs/:id" component={KegPage} />
+        <PrivateRoute component={Kegs} />
+
       </Switch>
     </Router>
   );
