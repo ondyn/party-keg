@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import * as firebase from 'firebase';
 import { IContext } from '../../context/interface';
 import ApiContext from '../../context/context';
 import CreateUserForm from './CreateUserForm';
-import * as firebase from 'firebase';
+
 
 const KegMenu = ({ kegId, kegName }: { kegId: string, kegName: string }) => {
   const ctx: IContext = useContext(ApiContext);

@@ -1,6 +1,6 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import {
-  Button, Col, Form, Modal
+  Button, Col, Form, Modal,
 } from 'react-bootstrap';
 import { IKegUser } from './interface';
 
@@ -44,21 +44,27 @@ const CreateUserForm = (
     <Modal show={showAddUser} onHide={onClose} animation={false}>
       <Modal.Header closeButton>
         <Modal.Title>
-          <Text style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-            Add new <Text style={{ color: '#f0ad4e' }}>{kegName}</Text> keg user
-          </Text>
+          {`Add new  ${kegName}`}
+          <span style={{ color: '#f0ad4e' }}>{kegName}</span>
+          &nbsp; keg user
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={(event: FormEvent<HTMLFormElement>) => {
           onCreateUser(user);
           event.preventDefault();
-        }}>
+        }}
+        >
           <Form.Row>
             <Form.Group as={Col} controlId="formGroupName">
               <Form.Label>Name</Form.Label>
-              <Form.Control autoFocus name="name" placeholder="keg name" value={user.name}
-                            onChange={onChange} />
+              <Form.Control
+                autoFocus
+                name="name"
+                placeholder="keg name"
+                value={user.name}
+                onChange={onChange}
+              />
             </Form.Group>
           </Form.Row>
         </Form>
@@ -72,7 +78,7 @@ const CreateUserForm = (
         </Button>
       </Modal.Footer>
     </Modal>
-  )
+  );
 };
 
 export default CreateUserForm;
