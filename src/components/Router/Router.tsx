@@ -27,10 +27,8 @@ const MainRouter = () => {
       <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-
-          <BreadCrumb />
           <Nav className="mr-auto">
-            <NavLink className="nav-link" to="/kegs">Kegs</NavLink>
+            <BreadCrumb />
           </Nav>
           { loginState === AuthStatus.LoginSuccess
             ? (

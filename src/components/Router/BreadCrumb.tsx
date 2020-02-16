@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps, useHistory, useLocation, withRouter } from 'react-router-dom';
+import { IContext } from '../../context/interface';
+import ApiContext from '../../context/context';
 
 
 interface ComponentProps {
@@ -8,6 +10,9 @@ interface ComponentProps {
 
 const BreadCrumb = ({}: { location: any }) => {
   const history = useHistory();
+  const ctx: IContext = useContext(ApiContext);
+  const { kegs } = ctx;
+
   const handleAction = (event: React.MouseEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLAnchorElement>) => {
     history.push(`/kegs`);
   };
@@ -16,6 +21,7 @@ const BreadCrumb = ({}: { location: any }) => {
 
   const [kegsActive, setKegsActive] = useState(true);
   const [kegId, setKegId] = useState();
+  const [kegName, setKegName] = useState<string>();
 
   useEffect(() => {
     const elems: string[] = location.pathname.split('/');
@@ -28,9 +34,16 @@ const BreadCrumb = ({}: { location: any }) => {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (kegs && kegId) {
+      const keg = kegs.find(keg => keg.uid === kegId);
+      if (keg) setKegName(keg.name);
+    }
+  }, [kegId, kegs]);
+
   return (
     <>
-      <a className="nav-link active" style={{
+      <a className="nav-link" style={{
         cursor: 'pointer',
         color: 'white',
         boxSizing: 'border-box',
@@ -44,18 +57,15 @@ const BreadCrumb = ({}: { location: any }) => {
       </a>
       {!kegsActive ? (
         <>
-          <span style={{ color: 'white' }}>></span>
-          <a className="nav-link active" style={{
+          <div style={{ padding: '8px', color: 'white' }}>></div>
+          <a className="nav-link" style={{
             cursor: 'pointer',
             color: 'white',
             boxSizing: 'border-box',
-            borderBottom: kegsActive ? '1px solid white' : ''
+            borderBottom: kegsActive ? '' : '1px solid white'
           }}
-             onClick={(event: React.MouseEvent<HTMLAnchorElement>) => handleAction(event)}
-             onKeyPress={(event: React.KeyboardEvent<HTMLAnchorElement>) => handleAction(event)}
-             role="button"
              tabIndex={0}>
-            {kegId}
+            {kegName}
           </a>
         </>) : null
       }
@@ -63,5 +73,8 @@ const BreadCrumb = ({}: { location: any }) => {
   );
 };
 
+const BreadCrumbWrapper = () => {
+
+};
 
 export default withRouter(BreadCrumb);
