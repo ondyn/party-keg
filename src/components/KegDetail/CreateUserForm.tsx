@@ -1,5 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react';
-import { Button, Col, Form, Modal } from 'react-bootstrap';
+import {
+  Button, Col, Form, Modal,
+} from 'react-bootstrap';
 import { IKegUser } from './interface';
 
 type CreateUserProps = {
@@ -9,7 +11,11 @@ type CreateUserProps = {
   kegName: string,
 };
 
-const CreateUserForm = ({ show, onCreateUser, onClose, kegName }: CreateUserProps) => {
+const CreateUserForm = (
+  {
+    show, onCreateUser, onClose, kegName,
+  }: CreateUserProps,
+) => {
   const [showAddUser, setShowAddUser] = useState(false);
 
   const [user, setUser] = useState<IKegUser>({
@@ -30,21 +36,35 @@ const CreateUserForm = ({ show, onCreateUser, onClose, kegName }: CreateUserProp
   const [formValid, setFormValid] = useState(false);
 
   useEffect(() => {
-    user.name === '' ? setFormValid(false) : setFormValid(true);
+    if (user.name === '') setFormValid(false);
+    else setFormValid(true);
   }, [user.name]);
 
   return (
     <Modal show={showAddUser} onHide={onClose} animation={false}>
       <Modal.Header closeButton>
-        <Modal.Title>Add new <span style={{color: '#f0ad4e'}}>{kegName}</span> keg user</Modal.Title>
+        <Modal.Title>
+          {`Add new  ${kegName}`}
+          <span style={{ color: '#f0ad4e' }}>{kegName}</span>
+          &nbsp; keg user
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={(event: FormEvent<HTMLFormElement>) => {onCreateUser(user); event.preventDefault();}}>
+        <Form onSubmit={(event: FormEvent<HTMLFormElement>) => {
+          onCreateUser(user);
+          event.preventDefault();
+        }}
+        >
           <Form.Row>
             <Form.Group as={Col} controlId="formGroupName">
               <Form.Label>Name</Form.Label>
-              <Form.Control autoFocus name="name" placeholder="keg name" value={user.name}
-                            onChange={onChange}/>
+              <Form.Control
+                autoFocus
+                name="name"
+                placeholder="keg name"
+                value={user.name}
+                onChange={onChange}
+              />
             </Form.Group>
           </Form.Row>
         </Form>
@@ -58,7 +78,7 @@ const CreateUserForm = ({ show, onCreateUser, onClose, kegName }: CreateUserProp
         </Button>
       </Modal.Footer>
     </Modal>
-  )
+  );
 };
 
 export default CreateUserForm;

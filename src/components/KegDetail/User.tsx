@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
-import AddBeer from './AddBeer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faBeer, faPlus } from '@fortawesome/free-solid-svg-icons';
+import AddBeer from './AddBeer';
 
 interface IProps {
   userId: string;
@@ -32,10 +32,10 @@ const User = (props: IProps) => {
 
   const [volume, setVolume] = useState(0.5);
 
-  const onAddBeer = (userId: string, volume: number) => {
-    setVolume(volume);
+  const onAddBeer = (beerUserId: string, beerVolume: number) => {
+    setVolume(beerVolume);
     // write beer to DB
-    addBeer(userId, volume);
+    addBeer(userId, beerVolume);
     handleCloseAddBeer();
   };
 
@@ -45,7 +45,7 @@ const User = (props: IProps) => {
         {name}
       </Col>
       <Col xs={3} style={{ textAlign: 'center' }}>
-        <div>{lastTime ? lastTime : '-never-'}</div>
+        <div>{lastTime || '-never-'}</div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>last beer time</div>
       </Col>
       <Col style={{ textAlign: 'center' }}>
@@ -54,52 +54,68 @@ const User = (props: IProps) => {
         </div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>&permil;&nbsp;in blood</div>
       </Col>
-      {/*<Col style={{ textAlign: 'center' }}>*/}
-      {/*  <span>*/}
-      {/*  {beerCount}*/}
-      {/*  </span>*/}
-      {/*  <div style={{ fontSize: '0.8em', marginTop: '-5px' }}># beers</div>*/}
-      {/*</Col>*/}
       <Col style={{ textAlign: 'center' }}>
         <div>
-          {Math.round(actualVolume / 0.5 * 10) / 10}
+          {Math.round((actualVolume / 0.5) * 10) / 10}
         </div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>beers</div>
       </Col>
       <Col style={{ textAlign: 'center' }}>
         <div>
-          {beerPrice != -1 ? beerPrice : '-unknown-'}
+          {beerPrice !== -1 ? beerPrice : '-unknown-'}
         </div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>Kč</div>
       </Col>
       <Col style={{ padding: '0px', color: 'blue', textAlign: 'right' }}>
-        <Button style={{
-          width: '40px',
-          height: '40px',
-          padding: '0px 0px 6px 0px',
-          textAlign: 'center',
-        }} onClick={handleShowAddBeer}>
+        {/* <Button  */}
+        {/*  style={{ */}
+        {/*    width: '40px', */}
+        {/*    height: '40px', */}
+        {/*    padding: '0px 0px 6px 0px', */}
+        {/*    textAlign: 'center', */}
+        {/*  }} */}
+        {/*  onClick={handleShowAddBeer} */}
+        {/* >  */}
+        {/*  <FontAwesomeIcon */}
+        {/*    className="align-middle" */}
+        {/*    icon={faChartLine} */}
+        {/*    transform="up-1 grow-2" */}
+        {/*  /> */}
+        {/* </Button> */}
+      </Col>
+      <Col style={{ padding: '0px', color: 'blue', textAlign: 'right' }}>
+        <Button
+          style={{
+            width: '60px',
+            height: '40px',
+            // padding: '0px 0px 6px 0px',
+            textAlign: 'center',
+            // fontSize: '1.5em',
+          }}
+          onClick={handleShowAddBeer}
+        >
           <FontAwesomeIcon
             className="align-middle"
-            icon={faChartLine}
+            icon={faPlus}
+            transform="up-1 left-5"
+          />
+          <FontAwesomeIcon
+            className="align-middle"
+            icon={faBeer}
             transform="up-1 grow-2"
           />
         </Button>
       </Col>
-      <Col style={{ padding: '0px', color: 'blue', textAlign: 'right' }}>
-        <Button style={{
-          width: '40px',
-          height: '40px',
-          padding: '0px 0px 6px 0px',
-          textAlign: 'center',
-          fontSize: '1.5em'
-        }} onClick={handleShowAddBeer}>
-          <b>+</b></Button>
-      </Col>
-      <AddBeer show={showAddBeer} userName={name} lastTime={lastTime} userId={userId}
-               lastVolume={volume} onAddBeer={onAddBeer}
-               onClose={handleCloseAddBeer} />
+      <AddBeer
+        show={showAddBeer}
+        userName={name}
+        lastTime={lastTime}
+        userId={userId}
+        lastVolume={volume}
+        onAddBeer={onAddBeer}
+        onClose={handleCloseAddBeer}
+      />
     </Row>
-  )
+  );
 };
 export default User;

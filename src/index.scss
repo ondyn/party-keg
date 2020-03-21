@@ -53,6 +53,10 @@ code {
 //based on default Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+.btn {
+  border: 1px solid $success;
+}
+
 .navbar-link {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   --blue: #116466;

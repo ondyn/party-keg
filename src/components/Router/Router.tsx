@@ -1,17 +1,18 @@
 // Menu component with routing and login and user handling
 // This is main entrance to TESSA application
 import React, { useContext } from 'react';
-import { Nav, Navbar, NavDropdown, } from 'react-bootstrap';
-import { BrowserRouter as Router, NavLink, Route, Switch, useLocation } from 'react-router-dom';
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import {
+  BrowserRouter as Router, NavLink, Route, Switch,
+} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import ApiContext from '../../context/context';
-import { IContext } from '../../context/interface';
+import { AuthStatus, IContext } from '../../context/interface';
 import PrivateRoute from './PrivateRoute';
 import SignInPage from '../SignIn';
 import Kegs from '../Kegs';
-import { AuthStatus } from '../../context/state';
-import KegPage from '../KegDetail/KegPage';
+import { KegPage } from '../KegDetail/KegPage';
 import BreadCrumb from './BreadCrumb';
 
 // render menu
@@ -30,27 +31,28 @@ const MainRouter = () => {
           <Nav className="mr-auto">
             <BreadCrumb />
           </Nav>
-          { loginState === AuthStatus.LoginSuccess
-            ? (
-              <Nav onSelect={handleSelect}>
-                {
-                  // todo: remove style from FontAwesomeIcon, move to SCSS or add another layout
-                }
-                <FontAwesomeIcon
-                  style={{ marginLeft: '10px', marginTop: '10px', paddingBottom: '0px' }}
-                  className="align-middle"
-                  icon={faUser}
-                  color="gray"
-                />
-                <NavDropdown alignRight title="" id="basic-nav-dropdown">
-                  <NavLink className="dropdown-item" to="/page1">My profile</NavLink>
-                  <NavLink className="dropdown-item" to="/page2">Change password</NavLink>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="/" onClick={logout}>Logout</NavDropdown.Item>
-                </NavDropdown>
-              </Nav>
-            )
-            : null
+          {
+            loginState === AuthStatus.LoginSuccess
+              ? (
+                <Nav onSelect={handleSelect}>
+                  {
+                    // todo: remove style from FontAwesomeIcon, move to SCSS or add another layout
+                  }
+                  <FontAwesomeIcon
+                    style={{ marginLeft: '10px', marginTop: '10px', paddingBottom: '0px' }}
+                    className="align-middle"
+                    icon={faUser}
+                    color="gray"
+                  />
+                  <NavDropdown alignRight title="" id="basic-nav-dropdown">
+                    <NavLink className="dropdown-item" to="/page1">My profile</NavLink>
+                    <NavLink className="dropdown-item" to="/page2">Change password</NavLink>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="/" onClick={logout}>Logout</NavDropdown.Item>
+                  </NavDropdown>
+                </Nav>
+              )
+              : null
           }
         </Navbar.Collapse>
       </Navbar>
@@ -59,10 +61,8 @@ const MainRouter = () => {
       }
       <Switch>
         <Route path="/login" component={SignInPage} />
-
         <PrivateRoute path="/kegs/:id" component={KegPage} />
         <PrivateRoute component={Kegs} />
-
       </Switch>
     </Router>
   );
