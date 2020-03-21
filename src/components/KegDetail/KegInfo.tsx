@@ -46,7 +46,7 @@ const KegInfo = (
         </div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>beer price</div>
       </Col>
-      <Col xs={4}>
+      <Col className="d-flex justify-content-end" xs={4} style={{ padding: '0px 0px 0px 5px' }}>
         <KegMenu kegId={uid} kegName={name} />
       </Col>
     </Row>

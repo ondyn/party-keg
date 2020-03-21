@@ -1,3 +1,3 @@
-import KegPage from './KegPage';
+import { KegPage } from './KegPage';
 
 export default KegPage;

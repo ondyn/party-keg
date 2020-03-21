@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { IContext } from '../../context/interface';
-import Context from '../../context/context';
-import { Alert, Button, Card, Container, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faGoogle, faTwitterSquare } from '@fortawesome/free-brands-svg-icons';
-import { AuthStatus } from '../../context/state';
-
+import {
+  Alert, Button, Card, Container, Form,
+} from 'react-bootstrap';
+import { AuthStatus, IContext } from '../../context/interface';
+import Context from '../../context/context';
 
 interface IProps {
   location: any;
@@ -43,7 +43,7 @@ const SignInForm = (props: IProps) => {
   const isInvalid = value.pwd === '' || value.email === '';
 
   // redirect to the required page if authenticated
-  const { location: { state: { from: { pathname } } = {from: {pathname: '/'}} } } = props;
+  const { location: { state: { from: { pathname } } = { from: { pathname: '/' } } } } = props;
   if (loginState === AuthStatus.LoginSuccess) return <Redirect to={pathname} />;
 
   return (
@@ -83,18 +83,27 @@ const SignInForm = (props: IProps) => {
             <Form onSubmit={onSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label column={false}>Email address</Form.Label>
-                <Form.Control name="email" type="email" placeholder="Email Address"
-                              value={value.email}
-                              onChange={onChange} />
+                <Form.Control
+                  name="email"
+                  type="email"
+                  placeholder="Email Address"
+                  value={value.email}
+                  onChange={onChange}
+                />
                 <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
+                  We&apos;ll never share your email with anyone else.
                 </Form.Text>
               </Form.Group>
 
               <Form.Group controlId="formBasicPassword">
                 <Form.Label column={false}>Password</Form.Label>
-                <Form.Control name="pwd" type="password" placeholder="Password" value={value.pwd}
-                              onChange={onChange} />
+                <Form.Control
+                  name="pwd"
+                  type="password"
+                  placeholder="Password"
+                  value={value.pwd}
+                  onChange={onChange}
+                />
               </Form.Group>
               <Button className="float-right" disabled={isInvalid} variant="primary" type="submit">
                 Sign In
@@ -103,27 +112,28 @@ const SignInForm = (props: IProps) => {
           </Card.Body>
           <Card.Footer>
             <div className="d-flex justify-content-center links">
-              <span>Don't have an account?&nbsp;</span>
+              <span>Don&apos;t have an account?&nbsp;</span>
               <a href="/">Sign Up</a>
             </div>
             <div className="d-flex justify-content-center">
               <a href="/">Forgot your password?</a>
             </div>
             {loginState === AuthStatus.LoginFail
-            && <div
+            && (
+              <div
                 className="justify-content-center"
                 style={{ width: '233px', textAlign: 'center' }}
-            >
+              >
                 <Alert variant="primary">
                   Unable to sign in.
                 </Alert>
-            </div>}
+              </div>
+            )}
           </Card.Footer>
         </Card>
       </div>
     </Container>
-  )
-    ;
+  );
 };
 
 export default SignInPage;

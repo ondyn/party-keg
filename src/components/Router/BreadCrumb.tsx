@@ -1,23 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { RouteComponentProps, useHistory, useLocation, withRouter } from 'react-router-dom';
+import { useHistory, useLocation, withRouter } from 'react-router-dom';
 import { IContext } from '../../context/interface';
 import ApiContext from '../../context/context';
 
-
-interface ComponentProps {
-  location: any;
-}
-
-const BreadCrumb = ({}: { location: any }) => {
+const BreadCrumb = () => {
   const history = useHistory();
   const ctx: IContext = useContext(ApiContext);
   const { kegs } = ctx;
 
-  const handleAction = (event: React.MouseEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLAnchorElement>) => {
-    history.push(`/kegs`);
+  // event: React.MouseEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLAnchorElement>
+  const handleAction = () => {
+    history.push('/kegs');
   };
 
-  let location = useLocation();
+  const location = useLocation();
 
   const [kegsActive, setKegsActive] = useState(true);
   const [kegId, setKegId] = useState();
@@ -25,7 +21,6 @@ const BreadCrumb = ({}: { location: any }) => {
 
   useEffect(() => {
     const elems: string[] = location.pathname.split('/');
-    console.log(elems.length);
     if (elems.length > 2) {
       setKegsActive(false);
       setKegId(elems[2]);
@@ -36,45 +31,56 @@ const BreadCrumb = ({}: { location: any }) => {
 
   useEffect(() => {
     if (kegs && kegId) {
-      const keg = kegs.find(keg => keg.uid === kegId);
+      const keg = kegs.find((k) => k.uid === kegId);
       if (keg) setKegName(keg.name);
     }
   }, [kegId, kegs]);
 
   return (
     <>
-      <a className="nav-link" style={{
-        cursor: 'pointer',
-        color: 'white',
-        boxSizing: 'border-box',
-        borderBottom: kegsActive ? '1px solid white' : ''
-      }}
-         onClick={(event: React.MouseEvent<HTMLAnchorElement>) => handleAction(event)}
-         onKeyPress={(event: React.KeyboardEvent<HTMLAnchorElement>) => handleAction(event)}
-         role="button"
-         tabIndex={0}>
+      <button
+        className="nav-link"
+        type="button"
+        style={{
+          cursor: 'pointer',
+          color: 'white',
+          background: 'none',
+          boxSizing: 'border-box',
+          border: 'none',
+          borderBottom: kegsActive ? '1px solid white' : 'none',
+        }}
+        onClick={handleAction}
+        onKeyPress={handleAction}
+        tabIndex={0}
+      >
         Kegs
-      </a>
-      {!kegsActive ? (
-        <>
-          <div style={{ padding: '8px', color: 'white' }}>></div>
-          <a className="nav-link" style={{
-            cursor: 'pointer',
-            color: 'white',
-            boxSizing: 'border-box',
-            borderBottom: kegsActive ? '' : '1px solid white'
-          }}
-             tabIndex={0}>
-            {kegName}
-          </a>
-        </>) : null
+      </button>
+      {
+        !kegsActive ? (
+          <>
+            <div style={{ padding: '8px', color: 'white' }}>
+              &gt;
+            </div>
+            <button
+              type="button"
+              className="nav-link"
+              style={{
+                cursor: 'pointer',
+                color: 'white',
+                background: 'none',
+                border: 'none',
+                boxSizing: 'border-box',
+                borderBottom: kegsActive ? 'none' : '1px solid white',
+              }}
+              tabIndex={0}
+            >
+              {kegName}
+            </button>
+          </>
+        ) : null
       }
     </>
   );
-};
-
-const BreadCrumbWrapper = () => {
-
 };
 
 export default withRouter(BreadCrumb);

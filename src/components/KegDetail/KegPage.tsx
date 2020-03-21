@@ -3,10 +3,9 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Container, Row } from 'react-bootstrap';
 import * as firebase from 'firebase';
 import UserList from './UserList';
-import { IContext } from '../../context/interface';
+import { IContext, IKeg } from '../../context/interface';
 import ApiContext from '../../context/context';
 import { IBeer, IKegUser } from './interface';
-import { IKeg } from '../../context/state';
 import KegInfo from './KegInfo';
 
 interface RouteInfo {
@@ -96,7 +95,7 @@ export const KegPage = ({ match }: ComponentProps) => {
   // load kegs users when keg id is ready
   useEffect(() => {
     setKegId(match.params.id);
-  }, []);
+  }, [match.params.id]);
 
   useEffect(() => {
     if (kegId && kegs) {

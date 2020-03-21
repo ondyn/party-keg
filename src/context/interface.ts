@@ -1,8 +1,6 @@
-import { AuthStatus, IKeg } from './state';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
-import { Crud } from '../components/Kegs/Kegs';
 
 // context state
 export interface IContext {
@@ -19,4 +17,42 @@ export interface IContext {
   putBeer:() => void;
   addMember:() => void;
   db:(app?: firebase.app.App) => firebase.firestore.Firestore;
+}
+
+export enum Crud {
+  Create,
+  Read,
+  Update,
+  Delete
+}
+
+export enum AuthStatus {
+  LoggedOut,
+  LoginFail,
+  LoginSuccess,
+  LoggingIn
+}
+
+export interface IKeg {
+  uid: string;
+  name: string;
+  brewery: string;
+  epm: number | null;
+  volume: number | null;
+  price: number | null;
+  currency: string;
+  alc: number | null;
+  startTime: firebase.firestore.Timestamp | null;
+  stopTime: firebase.firestore.Timestamp | null;
+  isFinished: boolean;
+  owner: string;
+
+  drunkVolume?: number;
+}
+
+export interface IUser {
+  email: string;
+  kegs: string[];
+  roles: any;
+  username: string;
 }
