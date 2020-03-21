@@ -32,7 +32,7 @@ const ApiState: FunctionComponent<Props> = (
     roles: '',
     username: '',
   });
-  const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState('');
   const [kegs, setKegs] = useState<IKeg[]>([]);
 
   // const [userCB, setUserCB] = useState();
