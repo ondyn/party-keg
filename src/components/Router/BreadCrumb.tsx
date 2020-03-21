@@ -16,7 +16,7 @@ const BreadCrumb = () => {
   const location = useLocation();
 
   const [kegsActive, setKegsActive] = useState(true);
-  const [kegId, setKegId] = useState();
+  const [kegId, setKegId] = useState('');
   const [kegName, setKegName] = useState<string>();
 
   useEffect(() => {
