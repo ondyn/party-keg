@@ -73,7 +73,18 @@ const CreateUserForm = (
         <Button variant="secondary" onClick={onClose}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={() => onCreateUser(user)} disabled={!formValid}>
+        <Button
+          variant="primary"
+          onClick={() => {
+            onCreateUser(user);
+            setUser({
+              name: '',
+              id: '',
+              createTime: null,
+            });
+          }}
+          disabled={!formValid}
+        >
           Create user
         </Button>
       </Modal.Footer>
