@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Container, Row } from 'react-bootstrap';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 import UserList from './UserList';
 import { IContext, IKeg } from '../../context/interface';
 import ApiContext from '../../context/context';

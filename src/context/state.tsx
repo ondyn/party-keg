@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import ApiContext from './context';
 import 'firebase/auth';
 import 'firebase/firestore';

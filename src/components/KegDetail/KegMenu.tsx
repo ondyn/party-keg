@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 import { faChartLine, faPlus, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IContext } from '../../context/interface';

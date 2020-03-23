@@ -18,9 +18,6 @@ const KegItem = ({ keg }: {
   const handleCloseEditKeg = () => setShowEditKeg(false);
 
   const [showDeleteKeg, setShowDeleteKeg] = useState(false);
-  const handleShowDeleteKeg = () => setShowDeleteKeg(true);
-  const handleCloseDeleteKeg = () => setShowDeleteKeg(false);
-
 
   const handleAction = (
     event:
