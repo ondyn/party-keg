@@ -6,7 +6,7 @@ import { IKegUser } from './interface';
 
 type CreateUserProps = {
   show: boolean,
-  onCreateUser: (user: IKegUser) => void,
+  onCreateUser: (userName: string) => void,
   onClose: () => void,
   kegName: string,
 };
@@ -51,7 +51,7 @@ const CreateUserForm = (
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={(event: FormEvent<HTMLFormElement>) => {
-          onCreateUser(user);
+          onCreateUser(user.name);
           event.preventDefault();
         }}
         >
@@ -76,7 +76,7 @@ const CreateUserForm = (
         <Button
           variant="primary"
           onClick={() => {
-            onCreateUser(user);
+            onCreateUser(user.name);
             setUser({
               name: '',
               id: '',

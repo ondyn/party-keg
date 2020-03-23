@@ -117,13 +117,9 @@ export const KegPage = ({ match }: ComponentProps) => {
           ? (
             <>
               <KegInfo
-                uid={keg.uid}
+                keg={keg}
                 volumePrice={volumePrice}
                 drunkVolume={drunkVolume}
-                volume={keg.volume}
-                name={keg.name}
-                created={keg.startTime}
-                kegPrice={keg.price}
               />
               <UserList
                 users={kegUsers}

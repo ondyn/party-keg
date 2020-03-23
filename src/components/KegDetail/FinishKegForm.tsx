@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react';
 import {
   Button, Col, Container, Modal, Row,
 } from 'react-bootstrap';
+import { IKeg } from '../../context/interface';
 
 type FinishKegProps = {
   show: boolean,
   onFinishKeg: (closingBeerPrice: number) => void,
   onClose: () => void,
-  kegName: string,
-  kegPrice: number | null,
-  kegVolume: number | null,
+  keg: IKeg,
   drunkBeers: number,
 };
 
 const FinishKegForm = (
   {
-    show, onClose, kegName, onFinishKeg, kegPrice, kegVolume, drunkBeers,
+    show, onClose, keg, onFinishKeg, drunkBeers,
   }: FinishKegProps,
 ) => {
+  const { price, volume, name } = keg;
   const [showForm, setShowForm] = useState(false);
   const [billingVariant, setBillingVariant] = useState(1);
   const [customPrice, setCustomPrice] = useState(0);
@@ -30,22 +30,22 @@ const FinishKegForm = (
   }, [show]);
 
   useEffect(() => {
-    const drunkenP = kegPrice && drunkBeers && drunkBeers > 0
-      ? Math.round((kegPrice / drunkBeers) * 100) / 100
+    const drunkenP = price && drunkBeers && drunkBeers > 0
+      ? Math.round((price / drunkBeers) * 100) / 100
       : 0;
-    setBeerPrice(kegPrice && kegVolume
-      ? Math.round((kegPrice / (2 * kegVolume)) * 100) / 100
+    setBeerPrice(price && volume
+      ? Math.round((price / (2 * volume)) * 100) / 100
       : 0);
     setDrunkenPrice(drunkenP);
     setCustomPrice(drunkenP);
-  }, [kegPrice, kegVolume, drunkBeers]);
+  }, [price, volume, drunkBeers]);
 
   const onBeerPriceChange = (event: any) => {
     const { value, type } = event.target;
     const p = type === 'number' ? parseFloat(value) : 0;
     setCustomPrice(p);
-    setDelta(kegPrice && customPrice
-      ? Math.round((p * drunkBeers - kegPrice) * 100) / 100
+    setDelta(price && customPrice
+      ? Math.round((p * drunkBeers - price) * 100) / 100
       : 0);
     setBillingVariant(3);
   };
@@ -55,7 +55,7 @@ const FinishKegForm = (
       <Modal.Header closeButton>
         <Modal.Title>
           Well done, you you&apos;ve finished &nbsp;
-          <span style={{ color: '#f0ad4e' }}>{kegName}</span>
+          <span style={{ color: '#f0ad4e' }}>{name}</span>
           &nbsp; keg!
         </Modal.Title>
       </Modal.Header>
@@ -96,7 +96,7 @@ const FinishKegForm = (
               alignItems: 'center',
             }}
             >
-              {`${kegPrice} / ${kegVolume && kegVolume * 2} = ${beerPrice} Kč/beer`}
+              {`${price} / ${volume && volume * 2} = ${beerPrice} Kč/beer`}
             </Col>
           </Row>
           <Row>
@@ -129,7 +129,7 @@ const FinishKegForm = (
               alignItems: 'center',
             }}
             >
-              {`${kegPrice} / ${drunkBeers} = ${drunkenPrice} Kč/beer`}
+              {`${price} / ${drunkBeers} = ${drunkenPrice} Kč/beer`}
             </Col>
           </Row>
           <Row>
@@ -187,7 +187,7 @@ const FinishKegForm = (
                 padding: '0',
               }}
             >
-              {`${drunkBeers} *  ${customPrice} - ${kegPrice} = `}
+              {`${drunkBeers} *  ${customPrice} - ${price} = `}
               &nbsp;
               <span style={{ color: delta < 0 ? '#e83e8c' : '#325B67' }}>{delta}</span>
               &nbsp;
@@ -203,20 +203,20 @@ const FinishKegForm = (
         <Button
           variant="primary"
           onClick={() => {
-            let price = 0;
+            let finalBeerPrice = 0;
             switch (billingVariant) {
               case 1:
               default:
-                price = beerPrice || 0;
+                finalBeerPrice = beerPrice || 0;
                 break;
               case 2:
-                price = drunkenPrice || 0;
+                finalBeerPrice = drunkenPrice || 0;
                 break;
               case 3:
-                price = customPrice || 0;
+                finalBeerPrice = customPrice || 0;
                 break;
             }
-            onFinishKeg(price);
+            onFinishKeg(finalBeerPrice);
           }}
         >
           Finish Keg

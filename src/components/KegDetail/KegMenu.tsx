@@ -4,26 +4,21 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { faChartLine, faPlus, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IContext } from '../../context/interface';
+import { IContext, IKeg } from '../../context/interface';
 import ApiContext from '../../context/context';
 import CreateUserForm from './CreateUserForm';
 import FinishKegForm from './FinishKegForm';
 
 const KegMenu = (
   {
-    kegId,
-    kegName,
-    kegPrice,
-    kegVolume,
+    keg,
     drunkBeers,
   }: {
-    kegId: string,
-    kegName: string,
-    kegPrice: number | null,
-    kegVolume: number | null,
+    keg: IKeg,
     drunkBeers: number,
   },
 ) => {
+  const { uid, name } = keg;
   const ctx: IContext = useContext(ApiContext);
   const { db } = ctx;
 
@@ -35,10 +30,10 @@ const KegMenu = (
   const handleShowFinishKegForm = () => setShowFinishKegForm(true);
   const handleCloseFinishKegForm = () => setShowFinishKegForm(false);
 
-  const addKegUser = ({ name }: { name: string }) => {
-    db().collection('kegs').doc(kegId).collection('users')
+  const addKegUser = (userName: string) => {
+    db().collection('kegs').doc(uid).collection('users')
       .add({
-        name,
+        name: userName,
         createTime: firebase.firestore.Timestamp.now(),
       })
       .then((docRef) => {
@@ -78,7 +73,7 @@ const KegMenu = (
       </Button>
       <Button variant="danger" onClick={handleShowFinishKegForm}>Finish keg</Button>
       <CreateUserForm
-        kegName={kegName}
+        kegName={name}
         show={showAddUser}
         onCreateUser={addKegUser}
         onClose={handleCloseAddUser}
@@ -87,9 +82,7 @@ const KegMenu = (
         show={showFinishKegForm}
         onFinishKeg={finishKeg}
         onClose={handleCloseFinishKegForm}
-        kegName={kegName}
-        kegPrice={kegPrice}
-        kegVolume={kegVolume}
+        keg={keg}
         drunkBeers={drunkBeers}
       />
     </>

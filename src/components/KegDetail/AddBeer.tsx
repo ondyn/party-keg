@@ -34,8 +34,8 @@ const AddBeer = (
     <Modal show={showAddBeer} onHide={onClose} animation={false}>
       <Modal.Header closeButton>
         <Modal.Title>
-          <strong>{userName}</strong>
-          has another beer
+          <span style={{ fontWeight: 'bold', color: '#f0ad4e' }}>{userName}</span>
+          &nbsp;has another beer
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -74,7 +74,9 @@ const AddBeer = (
         </Form>
         <div>
           <span>
-            {`You had the last beer on: ${lastTime}`}
+            <span style={{ fontWeight: 'bold', color: '#f0ad4e' }}>{userName}</span>
+            &nbsp;
+            {`had the last beer on: ${lastTime}`}
           </span>
         </div>
       </Modal.Body>
