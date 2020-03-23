@@ -39,7 +39,7 @@ const AddBeer = (
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={() => onAddBeer(userId, volume)}>
           <Form.Row>
             <Form.Label>Volume [litres]</Form.Label>
           </Form.Row>
@@ -69,7 +69,6 @@ const AddBeer = (
                   </Button>
                 ))}
               </ButtonGroup>
-
             </Form.Group>
           </Form.Row>
         </Form>
@@ -80,10 +79,10 @@ const AddBeer = (
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="secondary" onClick={onClose} tabIndex={-1}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={() => onAddBeer(userId, volume)}>
+        <Button variant="primary" onClick={() => onAddBeer(userId, volume)} tabIndex={0}>
           Add beer
         </Button>
       </Modal.Footer>

@@ -14,7 +14,7 @@ const Kegs = () => {
 
   const ctx: IContext = useContext(ApiContext);
   const {
-    kegs, putKeg, userId, loadingData,
+    kegs, putKeg, loadingData,
   } = ctx;
 
   const onCreateKeg = (keg: IKeg, variant: Crud) => {
@@ -24,12 +24,13 @@ const Kegs = () => {
 
   const kegList = () => (
     kegs.map((keg: IKeg) => (
-      <KegItem key={keg.uid} keg={keg} userUid={userId} />
+      <KegItem key={keg.uid} keg={keg} />
     ))
   );
 
   return (
     <>
+      {/* todo:  style={{ filter: 'blur(2px)' }} */}
       <Container>
         {loadingData && <div>Loading ...</div>}
         {kegs.length > 0 ? kegList() : <div>You have no kegs ...</div>}

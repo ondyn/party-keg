@@ -4,6 +4,20 @@ import {
 } from 'react-bootstrap';
 import { Crud, IKeg } from '../../context/interface';
 
+const emptyKeg = {
+  name: '',
+  volume: null,
+  stopTime: null,
+  startTime: null,
+  price: null,
+  epm: null,
+  currency: '',
+  owner: '',
+  isFinished: false,
+  brewery: '',
+  alc: null,
+  uid: '',
+};
 
 const KegForm = (
   {
@@ -18,20 +32,7 @@ const KegForm = (
 ) => {
   const [showAddKeg, setShowAddKeg] = useState(false);
 
-  const [keg, setKeg] = useState<IKeg>(initKeg || {
-    name: '',
-    volume: null,
-    stopTime: null,
-    startTime: null,
-    price: null,
-    epm: null,
-    currency: '',
-    owner: '',
-    isFinished: false,
-    brewery: '',
-    alc: null,
-    uid: '',
-  });
+  const [keg, setKeg] = useState<IKeg>(initKeg || emptyKeg);
 
   useEffect(() => {
     setShowAddKeg(show);
@@ -156,7 +157,14 @@ const KegForm = (
         <Button variant="secondary" onClick={onClose}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={() => onFromSubmit(keg, variant)} disabled={!formValid}>
+        <Button
+          variant="primary"
+          onClick={() => {
+            onFromSubmit(keg, variant);
+            setKeg(emptyKeg);
+          }}
+          disabled={!formValid}
+        >
           {variant === Crud.Create ? 'Create keg' : 'Update keg'}
         </Button>
       </Modal.Footer>

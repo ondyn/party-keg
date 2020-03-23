@@ -6,14 +6,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IContext } from '../../context/interface';
 import ApiContext from '../../context/context';
 import CreateUserForm from './CreateUserForm';
+import FinishKegForm from './FinishKegForm';
 
-const KegMenu = ({ kegId, kegName }: { kegId: string, kegName: string }) => {
+const KegMenu = (
+  {
+    kegId,
+    kegName,
+    kegPrice,
+    kegVolume,
+    drunkBeers,
+  }: {
+    kegId: string,
+    kegName: string,
+    kegPrice: number | null,
+    kegVolume: number | null,
+    drunkBeers: number,
+  },
+) => {
   const ctx: IContext = useContext(ApiContext);
   const { db } = ctx;
 
   const [showAddUser, setShowAddUser] = useState(false);
   const handleShowAddUser = () => setShowAddUser(true);
   const handleCloseAddUser = () => setShowAddUser(false);
+
+  const [showFinishKegForm, setShowFinishKegForm] = useState(false);
+  const handleShowFinishKegForm = () => setShowFinishKegForm(true);
+  const handleCloseFinishKegForm = () => setShowFinishKegForm(false);
 
   const addKegUser = ({ name }: { name: string }) => {
     db().collection('kegs').doc(kegId).collection('users')
@@ -29,6 +48,12 @@ const KegMenu = ({ kegId, kegName }: { kegId: string, kegName: string }) => {
       });
     handleCloseAddUser();
   };
+
+  const finishKeg = (variant: number) => {
+    console.log(variant);
+    handleCloseFinishKegForm();
+  };
+
   return (
     <>
       <Button style={{ width: '57px' }} onClick={handleShowAddUser}>
@@ -50,12 +75,21 @@ const KegMenu = ({ kegId, kegName }: { kegId: string, kegName: string }) => {
           transform="up-1 grow-3"
         />
       </Button>
-      <Button variant="danger">Finish keg</Button>
+      <Button variant="danger" onClick={handleShowFinishKegForm}>Finish keg</Button>
       <CreateUserForm
         kegName={kegName}
         show={showAddUser}
         onCreateUser={addKegUser}
         onClose={handleCloseAddUser}
+      />
+      <FinishKegForm
+        show={showFinishKegForm}
+        onFinishKeg={finishKeg}
+        onClose={handleCloseFinishKegForm}
+        kegName={kegName}
+        kegPrice={kegPrice}
+        kegVolume={kegVolume}
+        drunkBeers={drunkBeers}
       />
     </>
   );

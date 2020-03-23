@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Row } from 'react-bootstrap';
 import KegForm from './KegForm';
 import { Crud, IContext, IKeg } from '../../context/interface';
 import ApiContext from '../../context/context';
+import DeleteKegConfirm from './DeleteKegConfirm';
 
-const KegItem = ({ userUid, keg }: {
-  userUid: string,
+const KegItem = ({ keg }: {
   keg: IKeg,
 }) => {
   const ctx: IContext = useContext(ApiContext);
@@ -17,9 +17,14 @@ const KegItem = ({ userUid, keg }: {
   const handleShowEditKeg = () => setShowEditKeg(true);
   const handleCloseEditKeg = () => setShowEditKeg(false);
 
+  const [showDeleteKeg, setShowDeleteKeg] = useState(false);
+  const handleShowDeleteKeg = () => setShowDeleteKeg(true);
+  const handleCloseDeleteKeg = () => setShowDeleteKeg(false);
+
+
   const handleAction = (
     event:
-    React.MouseEvent<HTMLDivElement | HTMLButtonElement> | React.KeyboardEvent<HTMLDivElement>,
+      React.MouseEvent<HTMLDivElement | HTMLButtonElement> | React.KeyboardEvent<HTMLDivElement>,
   ) => {
     event.stopPropagation();
     switch (event.currentTarget.id) {
@@ -27,7 +32,7 @@ const KegItem = ({ userUid, keg }: {
         history.push(`/kegs/${keg.uid}`);
         break;
       case 'delete':
-        removeKeg(keg.uid);
+        setShowDeleteKeg(true);
         break;
       case 'edit':
         handleShowEditKeg();
@@ -45,53 +50,64 @@ const KegItem = ({ userUid, keg }: {
 
   return (
     <>
-      <Row style={{ border: '1px solid #116466', margin: '3px' }}>
-        <Col style={{ padding: '0px' }}>
-          <div
-            id="keg"
-            className="keg-item"
-            style={{
-              width: '100%',
-              overflow: 'hidden',
-              textAlign: 'left',
-              margin: '0px',
-              padding: '0px 0px 0px 15px',
-            }}
-            onClick={(event: React.MouseEvent<HTMLDivElement>) => handleAction(event)}
-            onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => handleAction(event)}
-            role="button"
-            tabIndex={0}
+      <Row
+        style={{
+          border: '1px solid #116466',
+          margin: '3px',
+          display: 'flex',
+          alignContent: 'stretch',
+        }}
+      >
+        <div
+          id="keg"
+          className="keg-item"
+          style={{
+            flex: '1 1 auto',
+            alignSelf: 'stretch',
+            overflow: 'hidden',
+            textAlign: 'left',
+            margin: '0px',
+            padding: '0px 0px 0px 15px',
+            display: 'flex',
+            alignContent: 'stretch',
+          }}
+          onClick={(event: React.MouseEvent<HTMLDivElement>) => handleAction(event)}
+          onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => handleAction(event)}
+          role="button"
+          tabIndex={0}
+        >
+          <span style={{ fontSize: '1.5em' }}>
+            {/* step text */}
+            {keg.name}
+          </span>
+          <span style={{
+            marginLeft: '20px',
+            display: 'inline-flex',
+            alignItems: 'center',
+          }}
           >
-            <span style={{ fontSize: '1.5em' }}>
-              {/* step text */}
-              {keg.name}
-            </span>
-            <span style={{ marginLeft: '20px' }}>
-              {
-                keg.startTime!.toDate().toLocaleString()
-              }
-            </span>
-            {userUid === keg.owner && (
-              <>
-                <Button
-                  id="delete"
-                  style={{ float: 'right' }}
-                  variant="danger"
-                  onClick={(event: React.MouseEvent<HTMLButtonElement>) => handleAction(event)}
-                >
-                  Delete
-                </Button>
-                <Button
-                  id="edit"
-                  style={{ float: 'right' }}
-                  onClick={(event: React.MouseEvent<HTMLButtonElement>) => handleAction(event)}
-                >
-                  Edit
-                </Button>
-              </>
-            )}
-          </div>
-        </Col>
+            {
+              keg.startTime!.toDate().toLocaleString()
+            }
+          </span>
+        </div>
+        <div style={{ flex: '0 1 auto', alignSelf: 'stretch' }}>
+          <Button
+            id="delete"
+            style={{ float: 'right' }}
+            variant="danger"
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => handleAction(event)}
+          >
+            Delete
+          </Button>
+          <Button
+            id="edit"
+            style={{ float: 'right' }}
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => handleAction(event)}
+          >
+            Edit
+          </Button>
+        </div>
       </Row>
       <KegForm
         variant={Crud.Update}
@@ -99,6 +115,12 @@ const KegItem = ({ userUid, keg }: {
         onFromSubmit={onKegEdit}
         onClose={handleCloseEditKeg}
         keg={keg}
+      />
+      <DeleteKegConfirm
+        show={showDeleteKeg}
+        onDelete={() => removeKeg(keg.uid)}
+        onClose={() => setShowDeleteKeg(false)}
+        kegName={keg.name}
       />
     </>
   );

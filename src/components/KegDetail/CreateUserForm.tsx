@@ -44,7 +44,7 @@ const CreateUserForm = (
     <Modal show={showAddUser} onHide={onClose} animation={false}>
       <Modal.Header closeButton>
         <Modal.Title>
-          {`Add new  ${kegName}`}
+          Add new &nbsp;
           <span style={{ color: '#f0ad4e' }}>{kegName}</span>
           &nbsp; keg user
         </Modal.Title>
