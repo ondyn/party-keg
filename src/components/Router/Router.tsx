@@ -48,7 +48,7 @@ const MainRouter = () => {
                     <NavLink className="dropdown-item" to="/page1">My profile</NavLink>
                     <NavLink className="dropdown-item" to="/page2">Change password</NavLink>
                     {/* todo: versing */}
-                    <span>ver 0.1</span>
+                    <span>ver 0.2</span>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="/" onClick={logout}>Logout</NavDropdown.Item>
                   </NavDropdown>
