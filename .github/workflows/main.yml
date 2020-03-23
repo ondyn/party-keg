@@ -26,7 +26,7 @@ jobs:
     - name: Decrypt large secret
       run: ./decrypt_secret.sh
       env:
-        LARGE_SECRET_PASSPHRASE: ${{ secrets.DECRYPT_SECRET }}
+        DECRYPT_SECRET: ${{ secrets.DECRYPT_SECRET }}
     - run: cat .env
     - uses: w9jds/firebase-action@master
       with:
