@@ -22,12 +22,12 @@ jobs:
       with:
         node-version: '12.x'
     - run: npm install
-    - run: npm run build
     - name: Decrypt large secret
       run: ./decrypt_secret.sh
       env:
         DECRYPT_SECRET: ${{ secrets.DECRYPT_SECRET }}
     - run: cat .env
+    - run: npm run build
     - uses: w9jds/firebase-action@master
       with:
         args: deploy --only hosting
