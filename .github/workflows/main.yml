@@ -24,7 +24,7 @@ jobs:
     - run: npm install
     - run: npm run build
     - name: Decrypt large secret
-      run: ./.github/scripts/decrypt_secret.sh
+      run: ./decrypt_secret.sh
       env:
         LARGE_SECRET_PASSPHRASE: ${{ secrets.DECRYPT_SECRET }}
     - run: cat .env
