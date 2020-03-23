@@ -5,3 +5,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - ESLint (Airbnb)
 - ReactBootstrap
 - Firebase
+- NPM
+- FontAwesome
+- React Bootstrap
+
+## Environment
+- GitHub
+- Firebase (Google)
