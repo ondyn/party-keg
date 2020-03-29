@@ -15,7 +15,7 @@ const DeleteKegConfirm = (
     show, onClose, onDelete, kegName,
   }: Props,
 ) => (
-  <Modal show={show} onHide={onClose} animation={false}>
+  <Modal show={show} onHide={onClose} animation={false} centered>
     <Modal.Header closeButton>
       <Modal.Title>
         Are you sure you want to remove the&nbsp;

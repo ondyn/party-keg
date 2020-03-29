@@ -51,7 +51,7 @@ const FinishKegForm = (
   };
 
   return (
-    <Modal show={showForm} onHide={onClose} animation={false} size="lg">
+    <Modal show={showForm} onHide={onClose} animation={false} size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title>
           Well done, you you&apos;ve finished &nbsp;

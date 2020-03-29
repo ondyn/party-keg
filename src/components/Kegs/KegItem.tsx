@@ -87,6 +87,19 @@ const KegItem = ({ keg }: {
               keg.startTime!.toDate().toLocaleString()
             }
           </span>
+          {keg.isFinished
+            ? (
+              <span style={{
+                marginLeft: '20px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                color: '#f0ad4e',
+              }}
+              >
+                FINISHED
+              </span>
+            )
+            : null}
         </div>
         <div style={{ flex: '0 1 auto', alignSelf: 'stretch' }}>
           <Button
@@ -97,13 +110,17 @@ const KegItem = ({ keg }: {
           >
             Delete
           </Button>
-          <Button
-            id="edit"
-            style={{ float: 'right' }}
-            onClick={(event: React.MouseEvent<HTMLButtonElement>) => handleAction(event)}
-          >
-            Edit
-          </Button>
+          {keg.isFinished
+            ? null
+            : (
+              <Button
+                id="edit"
+                style={{ float: 'right' }}
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => handleAction(event)}
+              >
+                Edit
+              </Button>
+            )}
         </div>
       </Row>
       <KegForm

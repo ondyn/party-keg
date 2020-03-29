@@ -14,6 +14,7 @@ const emptyKeg = {
   currency: '',
   owner: '',
   isFinished: false,
+  finalBeerPrice: 0,
   brewery: '',
   alc: null,
   uid: '',
@@ -51,7 +52,7 @@ const KegForm = (
   }, [keg.name]);
 
   return (
-    <Modal show={showAddKeg} onHide={onClose} animation={false}>
+    <Modal show={showAddKeg} onHide={onClose} animation={false} centered>
       <Modal.Header closeButton>
         <Modal.Title>{variant === Crud.Create ? 'Add new keg' : 'Edit keg'}</Modal.Title>
       </Modal.Header>

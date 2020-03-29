@@ -3,6 +3,7 @@ import { Button, Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBeer, faPlus } from '@fortawesome/free-solid-svg-icons';
 import AddBeer from './AddBeer';
+import Bac from './BAC';
 
 interface IProps {
   userId: string;
@@ -13,6 +14,7 @@ interface IProps {
   actualVolume: number;
   beerPrice: number;
   addBeer: (userId: string, volume: number) => void;
+  isFinished: boolean;
 }
 
 const User = (props: IProps) => {
@@ -24,6 +26,7 @@ const User = (props: IProps) => {
     actualVolume,
     beerPrice,
     addBeer,
+    isFinished,
   } = props;
 
   const [showAddBeer, setShowAddBeer] = useState(false);
@@ -51,6 +54,7 @@ const User = (props: IProps) => {
       <Col style={{ textAlign: 'center' }}>
         <div>
           {alcInBlood}
+          <Bac />
         </div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>&permil;&nbsp;in blood</div>
       </Col>
@@ -84,27 +88,31 @@ const User = (props: IProps) => {
         {/* </Button> */}
       </Col>
       <Col style={{ padding: '0px', color: 'blue', textAlign: 'right' }}>
-        <Button
-          style={{
-            width: '60px',
-            height: '40px',
-            // padding: '0px 0px 6px 0px',
-            textAlign: 'center',
-            // fontSize: '1.5em',
-          }}
-          onClick={handleShowAddBeer}
-        >
-          <FontAwesomeIcon
-            className="align-middle"
-            icon={faPlus}
-            transform="up-1 left-5"
-          />
-          <FontAwesomeIcon
-            className="align-middle"
-            icon={faBeer}
-            transform="up-1 grow-2"
-          />
-        </Button>
+        {!isFinished
+          ? (
+            <Button
+              style={{
+                width: '60px',
+                height: '40px',
+                // padding: '0px 0px 6px 0px',
+                textAlign: 'center',
+                // fontSize: '1.5em',
+              }}
+              onClick={handleShowAddBeer}
+            >
+              <FontAwesomeIcon
+                className="align-middle"
+                icon={faPlus}
+                transform="up-1 left-5"
+              />
+              <FontAwesomeIcon
+                className="align-middle"
+                icon={faBeer}
+                transform="up-1 grow-2"
+              />
+            </Button>
+          )
+          : null}
       </Col>
       <AddBeer
         show={showAddBeer}

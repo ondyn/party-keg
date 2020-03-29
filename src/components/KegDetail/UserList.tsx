@@ -3,11 +3,13 @@ import User from './User';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { IBeer, IKegUser } from './interface';
+import { IKeg } from '../../context/interface';
 
 const UserList = (
   {
-    users, addBeer, beers, volumePrice,
+    keg, users, addBeer, beers, volumePrice,
   }: {
+    keg: IKeg,
     volumePrice: number,
     users: IKegUser[],
     beers: IBeer[],
@@ -33,10 +35,13 @@ const UserList = (
           actualVolume={volume}
           alcInBlood={0.2}
           beerCount={userBeers.length}
-          beerPrice={volumePrice !== -1 ? Math.round(volume * volumePrice) : -1}
+          beerPrice={!keg.isFinished
+            ? volumePrice !== -1 ? Math.round(volume * volumePrice) : -1
+            : Math.round(volume * keg.finalBeerPrice)}
           lastTime={(userBeers.length > 0 && userBeers[0] && userBeers[0].createTime) ? userBeers[0].createTime!.toDate().toLocaleString() : ''}
           name={user.name}
           userId={user.id}
+          isFinished={keg.isFinished}
           addBeer={addBeer}
         />
       );

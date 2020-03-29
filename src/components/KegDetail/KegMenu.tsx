@@ -45,25 +45,40 @@ const KegMenu = (
     handleCloseAddUser();
   };
 
-  const finishKeg = (variant: number) => {
-    console.log(variant);
+  const finishKeg = (finalBeerPrice: number) => {
+    db().collection('kegs').doc(uid)
+      .update({
+        isFinished: true,
+        finalBeerPrice,
+      })
+      .catch((error) => {
+        console.error('Error closing keg: ', error);
+      });
+
+
     handleCloseFinishKegForm();
   };
 
   return (
     <>
-      <Button style={{ width: '57px' }} onClick={handleShowAddUser}>
-        <FontAwesomeIcon
-          className="align-middle"
-          icon={faPlus}
-          transform="up-1"
-        />
-        <FontAwesomeIcon
-          className="align-middle"
-          icon={faUser}
-          transform="up-1"
-        />
-      </Button>
+      {
+        !keg.isFinished
+          ? (
+            <Button style={{ width: '57px' }} onClick={handleShowAddUser}>
+              <FontAwesomeIcon
+                className="align-middle"
+                icon={faPlus}
+                transform="up-1"
+              />
+              <FontAwesomeIcon
+                className="align-middle"
+                icon={faUser}
+                transform="up-1"
+              />
+            </Button>
+          )
+          : null
+      }
       <Button style={{ width: '57px' }}>
         <FontAwesomeIcon
           className="align-middle"
@@ -71,7 +86,8 @@ const KegMenu = (
           transform="up-1 grow-3"
         />
       </Button>
-      <Button variant="danger" onClick={handleShowFinishKegForm}>Finish keg</Button>
+      {!keg.isFinished
+        ? <Button variant="danger" onClick={handleShowFinishKegForm}>Finish keg</Button> : null}
       <CreateUserForm
         kegName={name}
         show={showAddUser}

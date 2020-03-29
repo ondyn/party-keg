@@ -45,6 +45,7 @@ export interface IKeg {
   startTime: firebase.firestore.Timestamp | null;
   stopTime: firebase.firestore.Timestamp | null;
   isFinished: boolean;
+  finalBeerPrice: number;
   owner: string;
 
   drunkVolume?: number;

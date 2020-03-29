@@ -31,7 +31,7 @@ const AddBeer = (
   };
 
   return (
-    <Modal show={showAddBeer} onHide={onClose} animation={false}>
+    <Modal show={showAddBeer} onHide={onClose} animation={false} centered>
       <Modal.Header closeButton>
         <Modal.Title>
           <span style={{ fontWeight: 'bold', color: '#f0ad4e' }}>{userName}</span>

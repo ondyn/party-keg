@@ -122,6 +122,7 @@ export const KegPage = ({ match }: ComponentProps) => {
                 drunkVolume={drunkVolume}
               />
               <UserList
+                keg={keg}
                 users={kegUsers}
                 beers={beers}
                 addBeer={addBeer}

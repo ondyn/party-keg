@@ -41,7 +41,7 @@ const CreateUserForm = (
   }, [user.name]);
 
   return (
-    <Modal show={showAddUser} onHide={onClose} animation={false}>
+    <Modal show={showAddUser} onHide={onClose} animation={false} centered>
       <Modal.Header closeButton>
         <Modal.Title>
           Add new &nbsp;
@@ -61,7 +61,7 @@ const CreateUserForm = (
               <Form.Control
                 autoFocus
                 name="name"
-                placeholder="keg name"
+                placeholder="user name"
                 value={user.name}
                 onChange={onChange}
               />

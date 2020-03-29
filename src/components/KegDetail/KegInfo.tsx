@@ -43,7 +43,9 @@ const KegInfo = (
       </Col>
       <Col style={{ textAlign: 'center' }}>
         <div>
-          {volumePrice !== -1 ? Math.round((volumePrice / 2) * 100) / 100 : '-unknown-'}
+          {!keg.isFinished
+            ? volumePrice !== -1 ? Math.round((volumePrice / 2) * 100) / 100 : '-unknown-'
+            : keg.finalBeerPrice}
         </div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>beer price</div>
       </Col>
