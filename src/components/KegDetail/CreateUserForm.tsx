@@ -6,9 +6,17 @@ import { IKegUser } from './interface';
 
 type CreateUserProps = {
   show: boolean,
-  onCreateUser: (userName: string) => void,
+  onCreateUser: (user: IKegUser) => void,
   onClose: () => void,
   kegName: string,
+};
+
+const initUser = {
+  name: '',
+  id: '',
+  createTime: null,
+  weight: 75,
+  isMan: true,
 };
 
 const CreateUserForm = (
@@ -18,11 +26,7 @@ const CreateUserForm = (
 ) => {
   const [showAddUser, setShowAddUser] = useState(false);
 
-  const [user, setUser] = useState<IKegUser>({
-    name: '',
-    id: '',
-    createTime: null,
-  });
+  const [user, setUser] = useState<IKegUser>(initUser);
 
   useEffect(() => {
     setShowAddUser(show);
@@ -51,7 +55,7 @@ const CreateUserForm = (
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={(event: FormEvent<HTMLFormElement>) => {
-          onCreateUser(user.name);
+          onCreateUser(user);
           event.preventDefault();
         }}
         >
@@ -67,6 +71,42 @@ const CreateUserForm = (
               />
             </Form.Group>
           </Form.Row>
+          <Form.Row>
+            <Form.Group as={Col} controlId="formGroupName">
+              <Form.Label>Weight</Form.Label>
+              <Form.Control
+                type="number"
+                name="weight"
+                placeholder="weight [kg]"
+                value={user.weight ? user.weight.toString() : '0'}
+                onChange={onChange}
+              />
+            </Form.Group>
+            <Form.Group as={Col} controlId="formGroupName">
+              <Form.Label>Sex</Form.Label>
+              <div>
+                <input
+                  type="radio"
+                  name="isMan"
+                  checked={user.isMan}
+                  onChange={onChange}
+                />
+                <span style={{ margin: '5px' }}>Man</span>
+                <input
+                  type="radio"
+                  checked={!user.isMan}
+                  onChange={() => onChange({
+                    target: {
+                      name: 'isMan',
+                      value: false,
+                      type: 'boolean',
+                    },
+                  })}
+                />
+                <span style={{ margin: '5px' }}>Other</span>
+              </div>
+            </Form.Group>
+          </Form.Row>
         </Form>
       </Modal.Body>
       <Modal.Footer>
@@ -76,12 +116,8 @@ const CreateUserForm = (
         <Button
           variant="primary"
           onClick={() => {
-            onCreateUser(user.name);
-            setUser({
-              name: '',
-              id: '',
-              createTime: null,
-            });
+            onCreateUser(user);
+            setUser(initUser);
           }}
           disabled={!formValid}
         >

@@ -8,6 +8,7 @@ import { IContext, IKeg } from '../../context/interface';
 import ApiContext from '../../context/context';
 import CreateUserForm from './CreateUserForm';
 import FinishKegForm from './FinishKegForm';
+import { IKegUser } from './interface';
 
 const KegMenu = (
   {
@@ -30,11 +31,13 @@ const KegMenu = (
   const handleShowFinishKegForm = () => setShowFinishKegForm(true);
   const handleCloseFinishKegForm = () => setShowFinishKegForm(false);
 
-  const addKegUser = (userName: string) => {
+  const addKegUser = (user: IKegUser) => {
     db().collection('kegs').doc(uid).collection('users')
       .add({
-        name: userName,
+        name: user.name,
         createTime: firebase.firestore.Timestamp.now(),
+        isMan: user.isMan,
+        weight: user.weight,
       })
       .then((docRef) => {
         console.log('User successfully written', docRef.id);

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import {
   Button, ButtonGroup, Col, Form, Modal,
 } from 'react-bootstrap';
+import TimeSpan from './TimeSpan';
 
 type IProps = {
   show: boolean,
   userName: string,
-  lastTime: string,
+  lastTime: number,
   userId: string,
   lastVolume: number,
   onAddBeer: (userId: string, volume: number) => void,
@@ -20,7 +21,6 @@ const AddBeer = (
 ) => {
   const [showAddBeer, setShowAddBeer] = useState(false);
   const [volume, setVolume] = useState(lastVolume);
-
   useEffect(() => {
     setShowAddBeer(show);
   }, [show]);
@@ -28,6 +28,22 @@ const AddBeer = (
   const onChange = (event: any) => {
     const { value } = event.target;
     setVolume(parseFloat(value));
+  };
+
+  const lastBeerInfo = () => {
+    if (lastTime === 0) return '';
+    return (
+      <div>
+        <span style={{ fontWeight: 'bold', color: '#f0ad4e' }}>{userName}</span>
+        &nbsp;had the last beer&nbsp;
+        <TimeSpan
+          startTime={lastTime}
+          endTime={Date.now()}
+          before
+          prefix="before"
+        />
+      </div>
+    );
   };
 
   return (
@@ -53,7 +69,7 @@ const AddBeer = (
                 max="100"
                 step="0.1"
                 placeholder="Glass volume"
-                value={volume ? volume.toString() : '0.5'}
+                value={volume ? volume.toString() : '0'}
                 onChange={onChange}
               />
             </Form.Group>
@@ -73,11 +89,7 @@ const AddBeer = (
           </Form.Row>
         </Form>
         <div>
-          <span>
-            <span style={{ fontWeight: 'bold', color: '#f0ad4e' }}>{userName}</span>
-            &nbsp;
-            {`had the last beer on: ${lastTime}`}
-          </span>
+          {lastBeerInfo()}
         </div>
       </Modal.Body>
       <Modal.Footer>

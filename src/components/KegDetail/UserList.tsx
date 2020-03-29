@@ -15,38 +15,46 @@ const UserList = (
     beers: IBeer[],
     addBeer: (userId: string, volume: number) => void
   },
-) => (
-  <>
-    {users.map((user) => {
-      const userBeers = beers.filter((beer) => beer.userId === user.id).sort(((a, b) => {
-        if (a.createTime && b.createTime) {
-          if (a.createTime > b.createTime) return -1;
-          if (a.createTime < b.createTime) return 1;
-          return 0;
-        }
-        return 1;
-      }));
+) => {
+  const getBeerPrice = (volume: number): number => {
+    if (!keg.isFinished) {
+      if (volumePrice !== -1) return Math.round(volume * volumePrice);
+      return -1;
+    }
+    return Math.round(volume * keg.finalBeerPrice);
+  };
 
-      const volume = userBeers.reduce((part, beer) => part + beer.volume, 0);
+  return (
+    <>
+      {users.map((user) => {
+        const userBeers = beers.filter((beer) => beer.userId === user.id).sort(((a, b) => {
+          if (a.createTime && b.createTime) {
+            if (a.createTime > b.createTime) return -1;
+            if (a.createTime < b.createTime) return 1;
+            return 0;
+          }
+          return 1;
+        }));
 
-      return (
-        <User
-          key={user.id}
-          actualVolume={volume}
-          alcInBlood={0.2}
-          beerCount={userBeers.length}
-          beerPrice={!keg.isFinished
-            ? volumePrice !== -1 ? Math.round(volume * volumePrice) : -1
-            : Math.round(volume * keg.finalBeerPrice)}
-          lastTime={(userBeers.length > 0 && userBeers[0] && userBeers[0].createTime) ? userBeers[0].createTime!.toDate().toLocaleString() : ''}
-          name={user.name}
-          userId={user.id}
-          isFinished={keg.isFinished}
-          addBeer={addBeer}
-        />
-      );
-    })}
-  </>
-);
+        const volume = userBeers.reduce((part, beer) => part + beer.volume, 0);
+
+        return (
+          <User
+            key={user.id}
+            actualVolume={volume}
+            alc={keg.alc}
+            beers={userBeers}
+            beerCount={userBeers.length}
+            beerPrice={getBeerPrice(volume)}
+            user={user}
+            userId={user.id}
+            isFinished={keg.isFinished}
+            addBeer={addBeer}
+          />
+        );
+      })}
+    </>
+  );
+};
 
 export default UserList;

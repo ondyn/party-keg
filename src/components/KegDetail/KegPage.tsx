@@ -37,8 +37,9 @@ export const KegPage = ({ match }: ComponentProps) => {
           name: doc.data().name,
           id: doc.id,
           createTime: doc.data().createTime,
+          weight: doc.data().weight,
+          isMan: doc.data().isMan,
         }));
-
         setKegUsers(users.sort((a, b) => {
           if (a.createTime && b.createTime) {
             if (a.createTime > b.createTime) return 1;
@@ -51,7 +52,7 @@ export const KegPage = ({ match }: ComponentProps) => {
   };
 
   const registerKegsBeersCB = (id: string) => {
-    console.log('registering CB for keg users', id);
+    console.log('registering CB for keg beers', id);
     firebase.firestore().collection('kegs').doc(id).collection('beers')
       .onSnapshot((snapshot) => {
         console.log('kegs beers changed');
