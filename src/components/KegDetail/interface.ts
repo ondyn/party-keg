@@ -5,6 +5,8 @@ export interface IKegUser {
   name: string,
   id: string,
   createTime: firebase.firestore.Timestamp | null;
+  weight: number | null,
+  isMan: boolean,
 }
 
 export interface IBeer {

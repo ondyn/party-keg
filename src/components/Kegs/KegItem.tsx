@@ -6,6 +6,9 @@ import { Crud, IContext, IKeg } from '../../context/interface';
 import ApiContext from '../../context/context';
 import DeleteKegConfirm from './DeleteKegConfirm';
 
+type MouseEvent = React.MouseEvent<HTMLDivElement | HTMLButtonElement>;
+type KeyboardEvent = React.KeyboardEvent<HTMLDivElement>;
+
 const KegItem = ({ keg }: {
   keg: IKeg,
 }) => {
@@ -20,8 +23,7 @@ const KegItem = ({ keg }: {
   const [showDeleteKeg, setShowDeleteKeg] = useState(false);
 
   const handleAction = (
-    event:
-      React.MouseEvent<HTMLDivElement | HTMLButtonElement> | React.KeyboardEvent<HTMLDivElement>,
+    event: MouseEvent | KeyboardEvent,
   ) => {
     event.stopPropagation();
     switch (event.currentTarget.id) {

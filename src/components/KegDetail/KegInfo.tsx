@@ -13,7 +13,7 @@ const KegInfo = (
   },
 ) => {
   const {
-    volume, name, startTime, price, uid,
+    volume, name, startTime,
   } = keg;
   const drunkBeers = drunkVolume ? Math.round(drunkVolume * 2 * 10) / 10 : 0;
   // const drunkBeersString = drunkBeers > 0 ? drunkBeers : '-unknown-';
@@ -23,6 +23,14 @@ const KegInfo = (
     color: danger ? '#e83e8c' : 'white',
     fontWeight: danger ? 'bold' : 'normal',
   } as React.CSSProperties;
+
+  const getBeerPrice = (): string => {
+    if (!keg.isFinished) {
+      if (volumePrice !== -1) return (Math.round((volumePrice / 2) * 100) / 100).toString();
+      return '-unknown-';
+    }
+    return keg.finalBeerPrice.toString();
+  };
 
   return (
     <Row style={{ border: 'solid 1px #116466', backgroundColor: '#2C3531', color: 'white' }}>
@@ -43,9 +51,7 @@ const KegInfo = (
       </Col>
       <Col style={{ textAlign: 'center' }}>
         <div>
-          {!keg.isFinished
-            ? volumePrice !== -1 ? Math.round((volumePrice / 2) * 100) / 100 : '-unknown-'
-            : keg.finalBeerPrice}
+          {getBeerPrice()}
         </div>
         <div style={{ fontSize: '0.8em', marginTop: '-5px' }}>beer price</div>
       </Col>
